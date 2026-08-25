@@ -1,0 +1,63 @@
+---
+/**
+ * The guilloché rosette geometry, emitted once per document as a <symbol>.
+ *
+ * Previously every rosette inlined its own polylines, which made the geometry
+ * 35 KB of the landing page's 42 KB gzipped and shipped a desktop-only rosette
+ * to phones that never painted it. Defining it once and referencing it with
+ * <use> keeps the CSS-variable styling working (an external file would break
+ * `stroke="var(--color-gold)"`, since <use> across documents does not inherit
+ * custom properties) while paying for the geometry a single time.
+ *
+ * Rendered by Base.astro, so every page has it available.
+ */
+const SIZE = 600;
+const CENTRE = SIZE / 2;
+
+/** Hypotrochoid: fixed circle R, rolling circle r, pen offset d. */
+function rosette(R: number, r: number, d: number, scale: number, steps: number) {
+  const ratio = (R - r) / r;
+  const extent = R - r + d;
+  const k = (scale / extent) * CENTRE;
+  const pts: string[] = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * Math.PI * 2 * r;
+    const x = (R - r) * Math.cos(t) + d * Math.cos(ratio * t);
+    const y = (R - r) * Math.sin(t) - d * Math.sin(ratio * t);
+    pts.push(`${(CENTRE + x * k).toFixed(1)},${(CENTRE + y * k).toFixed(1)}`);
+  }
+  return pts.join(" ");
+}
+
+// A rolling circle of 7 against radii coprime to it gives each ring a different
+// petal count, which is what produces real engine-turning's moiré depth.
+// Multiples of 7 collapse the figure to a few lobes, so they are skipped.
+const RADII = [12, 13, 15, 16, 17, 18];
+const ROLLING = 7;
+
+// 300 samples spread across 12–18 petals is ~17–25 points per petal: smooth at
+// every size this renders at, and less than two thirds the previous markup.
+const RESOLUTION = 300;
+
+const bands = RADII.map((R, i) => ({
+  points: rosette(R, ROLLING, 6.6 - i * 0.2, 0.99 - i * 0.115, RESOLUTION),
+  opacity: (1 - i * 0.11).toFixed(3),
+  width: (0.85 - i * 0.06).toFixed(2),
+}));
+---
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="jl-rosette" viewBox={`0 0 ${SIZE} ${SIZE}`}>
+    {bands.map((b) => (
+      <polyline
+        points={b.points}
+        fill="none"
+        stroke="var(--color-gold)"
+        stroke-width={b.width}
+        stroke-opacity={b.opacity}
+        stroke-linejoin="round"
+        vector-effect="non-scaling-stroke"
+      />
+    ))}
+  </symbol>
+</svg>

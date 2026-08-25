@@ -45,10 +45,18 @@ const principles = [
 
 // Real photographs from Jefferson's own files.
 const photos = [
-  { src: u("/jl-volunteer.webp"), w: 1200, h: 900, cap: "Volunteering with RSVP Singapore at Qihua Primary School" },
-  { src: u("/jl-bhutan.webp"), w: 1200, h: 900, cap: "Travelling in Bhutan" },
-  { src: u("/jl-awards.webp"), w: 1200, h: 900, cap: "Prudential Agency Awards Night, 2025" },
-];
+  { base: "jl-volunteer", cap: "Volunteering with RSVP Singapore at Qihua Primary School" },
+  { base: "jl-bhutan", cap: "Travelling in Bhutan" },
+  { base: "jl-awards", cap: "Prudential Agency Awards Night, 2025" },
+].map((p) => ({
+  ...p,
+  src: u(`/${p.base}.webp`),
+  // The gallery box is ~370px CSS wide at desktop and full-width on a phone,
+  // so most visitors never need the 1200 file.
+  srcset: `${u(`/${p.base}-800.webp`)} 800w, ${u(`/${p.base}.webp`)} 1200w`,
+  w: 1200,
+  h: 900,
+}));
 
 // Space held open for pictures Jefferson still needs to choose.
 const photoSlots = [
@@ -125,7 +133,6 @@ const photoSlots = [
             height="1484"
             class="relative aspect-[2/3] w-full object-cover"
             loading="eager"
-            fetchpriority="high"
           />
         </div>
       </div>
@@ -243,6 +250,8 @@ const photoSlots = [
           <div class="border border-gold/20 p-2">
             <img
               src={g.src}
+              srcset={g.srcset}
+              sizes="(min-width: 1024px) 370px, (min-width: 640px) 45vw, 90vw"
               alt={g.cap}
               width={g.w}
               height={g.h}

@@ -378,7 +378,11 @@
   @keyframes enter { to { opacity: 1; transform: none; filter: none; } }
 
   /* The guilloché rosette turns, very slowly, like a watermark catching light */
-  .guilloche-spin { animation: guilloche-turn 240s linear infinite; transform-origin: center; }
+  .guilloche-spin {
+    animation: guilloche-turn 240s linear infinite;
+    transform-origin: center;
+    will-change: transform;
+  }
   @keyframes guilloche-turn { to { transform: rotate(360deg); } }
 }
 

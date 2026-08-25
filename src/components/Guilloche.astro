@@ -1,89 +1,33 @@
 ---
 /**
- * Guilloché rosette — the engine-turned line work used on bond and share
- * certificates, banknotes and passport pages. Generated as real hypotrochoid
- * geometry at build time rather than faked with a gradient, so it stays crisp
- * at any size and costs no runtime JS.
+ * One instance of the guilloché rosette.
+ *
+ * The geometry lives once per document in GuillocheDefs; this just references
+ * it. Instances vary only in overall opacity, so a page with three rosettes
+ * pays for the polylines once instead of three times.
+ *
+ * The `rings` prop is retained for call-site compatibility but no longer
+ * changes the figure: at these opacities the difference between four and six
+ * rings was not visible, and one shared symbol is what makes the reuse work.
  */
 interface Props {
-  /** Number of nested rosette rings. */
   rings?: number;
-  /**
-   * Points sampled per ring. The curve closes after `r` revolutions, so this
-   * is spread across ~12–20 petals; 520 keeps the arcs smooth while holding
-   * the emitted markup down (every point ships as text in the HTML).
-   */
-  resolution?: number;
   class?: string;
-  /** Stroke opacity of the outermost ring; inner rings fade from here. */
+  /** Overall opacity of the whole figure. */
   opacity?: number;
 }
 
-const {
-  rings = 5,
-  resolution = 520,
-  class: className = "",
-  opacity = 0.5,
-} = Astro.props;
-
-const SIZE = 600;
-const CENTRE = SIZE / 2;
-
-/** Hypotrochoid: a fixed circle R, a rolling circle r, pen offset d. */
-function rosette(R: number, r: number, d: number, scale: number, steps: number) {
-  const ratio = (R - r) / r;
-  const extent = R - r + d;
-  const k = (scale / extent) * CENTRE;
-  const pts: string[] = [];
-
-  for (let i = 0; i <= steps; i++) {
-    const t = (i / steps) * Math.PI * 2 * r;
-    const x = (R - r) * Math.cos(t) + d * Math.cos(ratio * t);
-    const y = (R - r) * Math.sin(t) - d * Math.sin(ratio * t);
-    // One decimal is sub-pixel at every size this renders at, and halves the
-    // bytes each coordinate costs in the emitted HTML.
-    pts.push(`${(CENTRE + x * k).toFixed(1)},${(CENTRE + y * k).toFixed(1)}`);
-  }
-  return pts.join(" ");
-}
-
-// A rolling circle of 7 against fixed radii coprime to it gives each ring a
-// different petal count (R petals) with a tight centre — the dense, symmetric
-// figure real engine-turning produces. Multiples of 7 are skipped because they
-// collapse the rosette to a handful of lobes.
-const RADII = [12, 13, 15, 16, 17, 18, 19, 20];
-const ROLLING = 7;
-
-const bands = Array.from({ length: rings }, (_, i) => {
-  const R = RADII[i % RADII.length];
-  const d = 6.6 - i * 0.2;
-  const scale = 0.99 - i * 0.115;
-  return {
-    points: rosette(R, ROLLING, d, scale, resolution),
-    opacity: (opacity * (1 - i * 0.11)).toFixed(3),
-    width: (0.85 - i * 0.06).toFixed(2),
-  };
-});
+const { class: className = "", opacity = 0.4 } = Astro.props;
 ---
 
 <svg
-  class={className}
-  viewBox={`0 0 ${SIZE} ${SIZE}`}
+  class={`guilloche-spin ${className}`}
+  viewBox="0 0 600 600"
   fill="none"
   aria-hidden="true"
   focusable="false"
   preserveAspectRatio="xMidYMid meet"
+  style={`opacity:${opacity}`}
 >
-  <g class="guilloche-spin">
-    {bands.map((b) => (
-      <polyline
-        points={b.points}
-        stroke="var(--color-gold)"
-        stroke-width={b.width}
-        stroke-opacity={b.opacity}
-        stroke-linejoin="round"
-        vector-effect="non-scaling-stroke"
-      />
-    ))}
-  </g>
+  <use href="#jl-rosette" />
 </svg>
