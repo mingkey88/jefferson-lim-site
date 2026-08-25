@@ -32,10 +32,15 @@ Contrast is verified in-browser against actual painted ancestors: **0 failures a
 
 ## Type
 
-- **Display — Bodoni Moda** (`--font-display`). Every `h1`–`h4`, in gold. Didone contrast is the point; it is the lettering engraved certificates actually use. `h1` at `clamp(2.7rem, 6.4vw, 5rem)`, weight 500, tracking `-0.012em`, `text-wrap: balance`.
-- **Text — Archivo** (`--font-sans`). Body at `1.0125rem`/`1.68`. Measure held to `68ch` via `.prose-measure`.
-- `.flourish` — italic didone inside a gold heading, for a single emphasised word.
-- `.denom` — display numerals as certificate denominations. Proportional lining figures with kerning on and `-0.045em`; tabular figures open a hole inside Bodoni's `01`/`04`.
+Chosen for legibility on a dark ground. An earlier didone (Bodoni Moda) was replaced because its hairline strokes disappeared at heading sizes on navy — light text on dark also optically blooms, which eats thin strokes further.
+
+- **Display — Source Serif 4** (`--font-display`). Every `h1`–`h4`, in gold. Sturdy transitional serif with enough stroke weight to hold against the navy. Weight *rises* as size falls (`h1` 600 → `h3` 650), because small gold headings need more body than large ones.
+- **Text — Source Sans 3** (`--font-sans`). Body at `1.075rem` / `1.72`, tracking `+0.006em`. Slightly larger, looser and more open than a light-background equivalent would be. Measure held to `68ch` via `.prose-measure`.
+
+The two are a designed-together superfamily, so they share proportions and metrics.
+
+- `.flourish` — display italic inside a gold heading, for a single emphasised word.
+- `.denom` — display numerals as certificate denominations, proportional lining figures.
 - `.meta` — small tracked uppercase, for legends, captions and panel labels. **Never above a heading.**
 
 There are no eyebrows or kickers anywhere. Headings carry their own weight.

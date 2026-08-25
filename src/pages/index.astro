@@ -53,12 +53,21 @@ const principles = [
   },
 ];
 
-// Intrinsic dimensions differ per image; the 4:3 display crop is done in CSS,
-// so the attributes must carry the file's real size, not the display box.
+// Photographs from Jefferson's own BNI deck. Captions state what the picture
+// actually shows — the awards night is an event he attended, not an award won.
 const gallery = [
-  { src: u("/jl-awards.webp"), w: 900, h: 1200, cap: "At the Prudential agency awards night, 2025" },
-  { src: u("/jl-volunteer.webp"), w: 900, h: 750, cap: "Volunteering at a Singapore primary school" },
-  { src: u("/jl-bhutan.webp"), w: 900, h: 675, cap: "Travelling with friends, Bhutan" },
+  {
+    src: u("/jl-volunteer.webp"), w: 1200, h: 900,
+    cap: "Volunteering with RSVP Singapore at Qihua Primary School",
+  },
+  {
+    src: u("/jl-bhutan.webp"), w: 1200, h: 900,
+    cap: "Travelling in Bhutan",
+  },
+  {
+    src: u("/jl-awards.webp"), w: 1200, h: 900,
+    cap: "Prudential Agency Awards Night, 2025",
+  },
 ];
 ---
 
@@ -107,14 +116,14 @@ const gallery = [
         <a href={u("/services")} class="btn btn-outline">See how I help</a>
       </div>
 
+      <!-- Separators ride on the item as a right border, so a wrap can never
+           strand a divider at the end of a line. -->
       <ul
-        class="mut enter mt-16 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs uppercase tracking-[0.16em]"
+        class="mut enter mt-16 flex flex-wrap items-center gap-y-2 text-xs uppercase tracking-[0.14em] [&>li:not(:last-child)]:mr-6 [&>li:not(:last-child)]:border-r [&>li:not(:last-child)]:border-gold/25 [&>li:not(:last-child)]:pr-6"
         style="animation-delay:.4s"
       >
         <li>Built a public hospital's finance function</li>
-        <li class="hidden h-3 w-px bg-gold/30 sm:block" aria-hidden="true"></li>
-        <li>{CONTACT.agency}</li>
-        <li class="hidden h-3 w-px bg-gold/30 sm:block" aria-hidden="true"></li>
+        <li>Star Club Elite, first year</li>
         <li>Prudential Assurance Company Singapore</li>
       </ul>
     </div>
@@ -129,8 +138,8 @@ const gallery = [
           <img
             src={u("/jefferson-portrait.webp")}
             alt="Jefferson Lim, financial consultant"
-            width="800"
-            height="1200"
+            width="1000"
+            height="1484"
             class="relative aspect-[2/3] w-full object-cover"
             loading="eager"
             fetchpriority="high"
@@ -215,9 +224,9 @@ const gallery = [
           <h2>A life, not just a practice.</h2>
         </div>
         <p class="reveal dim md:col-span-7 md:pt-3">
-          When I am not advising clients, I volunteer in schools, supporting numeracy and mentoring
-          students. Otherwise I travel as often as I can, across Asia and Europe. At home: leather
-          crafting, Muay Thai, cycling, trekking.
+          I am passionate about giving back through volunteering, particularly supporting numeracy
+          and mentoring students in schools. Outside of that I travel as often as I can, across Asia
+          and Europe. At home: leather crafting, Muay Thai, cycling, trekking.
         </p>
       </div>
 
