@@ -1,0 +1,113 @@
+---
+import { u } from "../lib/url";
+import "../styles/global.css";
+import { SITE } from "../consts";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Schema from "../components/Schema.astro";
+import { CONTRACT } from "../direction-contract";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Suppress the site chrome (used by the standalone ad landing page). */
+  bare?: boolean;
+}
+
+interface PropsExtra {
+  /** e.g. "noindex, follow" for the ad landing page and 404. */
+  robots?: string;
+}
+
+const { title, description, bare = false, robots } = Astro.props as Props & PropsExtra;
+
+// Astro builds to directory format, so pathname carries a trailing slash while
+// every internal link omits it. Normalise so the canonical matches the links
+// and the sitemap instead of resolving through a host-level redirect.
+const canonicalPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const canonical = new URL(canonicalPath, SITE.url).href;
+const ogImage = new URL("/og-jefferson-lim.jpg", SITE.url).href;
+
+// The design-direction contract is a build-time artefact. It stays available
+// while developing but must never ship in a client's public HTML.
+const showContract = import.meta.env.DEV;
+
+// The GitHub Pages preview must never be crawled: it is an unfinished,
+// compliance-pending financial-services site. This overrides any per-page value.
+const IS_STAGING = import.meta.env.PUBLIC_STAGING === "true";
+const robotsValue = IS_STAGING ? "noindex, nofollow" : robots;
+---
+
+<!doctype html>
+<html lang="en-SG">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {robotsValue && <meta name="robots" content={robotsValue} />}
+    {!robotsValue && <link rel="canonical" href={canonical} />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="en_SG" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Jefferson Lim — Financial Consultant, Singapore" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="theme-color" content="#0a1e33" />
+
+    <link rel="icon" type="image/svg+xml" href={u("/favicon.svg")} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&display=swap"
+      rel="stylesheet"
+    />
+
+    {!bare && <Schema />}
+
+    <noscript><style>.reveal{opacity:1;transform:none;filter:none;}</style></noscript>
+  </head>
+
+  <body>
+    {showContract && <Fragment set:html={CONTRACT} />}
+
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="grain" aria-hidden="true"></div>
+
+    {!bare && <Nav />}
+    <main id="main" tabindex="-1"><slot /></main>
+    {!bare && <Footer />}
+
+    <script is:inline>
+      (function () {
+        var els = document.querySelectorAll(".reveal");
+        var motionOk = window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+        if (motionOk && "IntersectionObserver" in window) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  e.target.classList.add("in");
+                  io.unobserve(e.target);
+                }
+              });
+            },
+            { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+          );
+          els.forEach(function (el) { io.observe(el); });
+        } else {
+          els.forEach(function (el) { el.classList.add("in"); });
+        }
+      })();
+    </script>
+
+  </body>
+</html>

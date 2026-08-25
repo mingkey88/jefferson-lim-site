@@ -1,0 +1,7 @@
+# About Me became the landing page. The ! forces this over the static
+# dist/about/index.html shim Astro still emits.
+/about    /    301!
+
+# TODO before DNS cutover: map the old GoHighLevel funnel URLs here, one line
+# each, e.g.  /old-funnel-path    /services    301!
+# Anything with no equivalent should point at /.

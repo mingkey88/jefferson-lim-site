@@ -1,0 +1,74 @@
+name: Deploy staging preview to GitHub Pages
+
+# This publishes the STAGING PREVIEW, not the production site.
+#
+# The preview is built with a base path (/jefferson-lim-site/), marked
+# noindex/nofollow site-wide, and has its contact form replaced with direct
+# contact details — GitHub Pages cannot process form submissions, and this is
+# a compliance-pending financial-services site that must not be crawled.
+#
+# Production (jefferson-lim.com) uses the default `npm run build` with none of
+# these overrides.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build staging preview
+        env:
+          PUBLIC_SITE_URL: https://mingkey88.github.io
+          PUBLIC_BASE_PATH: /jefferson-lim-site/
+          PUBLIC_STAGING: "true"
+        run: npm run build
+
+      - name: Harden the preview against crawlers
+        run: |
+          # public/robots.txt is the PRODUCTION file (Allow + the real sitemap).
+          # The preview must refuse everything, and must not advertise a sitemap
+          # of jefferson-lim.com URLs that do not exist on this host.
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+          rm -f dist/sitemap.xml
+          # _redirects is Netlify-only; Pages ignores it, so drop the confusion.
+          rm -f dist/_redirects
+          # Without this, Jekyll strips Astro's _astro/ asset directory and the
+          # entire site loads unstyled.
+          touch dist/.nojekyll
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

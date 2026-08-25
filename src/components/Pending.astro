@@ -1,0 +1,24 @@
+---
+/**
+ * A block of copy still waiting on Prudential compliance sign-off.
+ *
+ * Renders ONLY during development. These are reminders for Jefferson and the
+ * build, not content for visitors — a live regulated site must never show
+ * "Awaiting compliance" to the public.
+ *
+ * The trade-off: hiding them in production could let a launch slip out with the
+ * real copy still missing. `npm run check:pending` fails the build in that case,
+ * so the reminder cannot be lost silently.
+ */
+interface Props {
+  label?: string;
+}
+const { label = "Awaiting compliance" } = Astro.props;
+const show = import.meta.env.DEV;
+---
+
+{show && (
+  <div class="pending px-4 py-3 text-xs">
+    <strong class="text-gold">{label}:</strong> <slot />
+  </div>
+)}

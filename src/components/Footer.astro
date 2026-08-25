@@ -1,0 +1,92 @@
+---
+import { u } from "../lib/url";
+import { SITE, NAV, CONTACT, SOCIAL, PENDING } from "../consts";
+import Monogram from "./Monogram.astro";
+import Icon from "./Icon.astro";
+import Pending from "./Pending.astro";
+
+const year = new Date().getFullYear();
+const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linkedin" } as const;
+---
+
+<footer class="border-t border-gold/20 bg-ink-950">
+  <div class="shell py-16 md:py-20">
+    <div class="grid gap-12 md:grid-cols-12 md:gap-10">
+      <div class="md:col-span-4">
+        <Monogram size={54} />
+        <p class="mt-5 font-display text-2xl italic text-gold">{SITE.name}</p>
+        <p class="dim mt-3 max-w-xs text-sm">
+          Financial, legal and healthcare planning for Singapore families — so the people you
+          love are provided for.
+        </p>
+
+        <ul class="mt-7 flex items-center gap-3">
+          {SOCIAL.map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="me noopener noreferrer"
+                class="flex h-11 w-11 items-center justify-center rounded-full border border-gold/35 text-gold transition-colors hover:border-gold hover:bg-gold hover:text-ink-950"
+                aria-label={`${s.label} — ${s.handle}`}
+              >
+                <Icon name={iconFor[s.label as keyof typeof iconFor]} size={17} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="md:col-span-3">
+        <h2 class="font-display text-lg text-gold">This site</h2>
+        <div class="rule-orn mt-3 max-w-[7rem]"><span class="rule-orn__mark"></span></div>
+        <ul class="dim mt-4 space-y-2.5 text-sm">
+          {NAV.map((item) => (
+            <li><a href={u(item.href)} class="inline-block py-1.5 transition-colors hover:text-gold">{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="md:col-span-5">
+        <h2 class="font-display text-lg text-gold">Get in touch</h2>
+        <div class="rule-orn mt-3 max-w-[7rem]"><span class="rule-orn__mark"></span></div>
+
+        <address class="mt-4 space-y-1 text-sm not-italic">
+          <p class="text-paper">{CONTACT.name} — {CONTACT.role}</p>
+          <p class="dim">{CONTACT.agency}</p>
+          <p class="mut">{CONTACT.agencyNote}</p>
+          <p class="dim pt-3">
+            {CONTACT.addressLines.map((l) => (<span class="block">{l}</span>))}
+          </p>
+          <p class="pt-3">
+            <a href={CONTACT.phoneHref} class="link-underline text-sm">{CONTACT.phone}</a>
+          </p>
+          <p class="pt-1.5">
+            <a href={CONTACT.emailHref} class="link-underline text-sm break-all">{CONTACT.email}</a>
+          </p>
+        </address>
+      </div>
+    </div>
+
+    <hr class="hairline mt-14" />
+
+    <div class="mut mt-6 space-y-3 text-xs leading-relaxed">
+      <p>&copy; {year} {SITE.name}. All rights reserved.</p>
+      {/*
+        Jefferson must supply: the representative disclosure, the Prudential
+        advertising reference code for THIS site, and a "does not constitute
+        personalised financial advice" line. The existing ad funnel's code
+        (AT27Sep24FF27) covers that creative only and cannot be reused here.
+        Set PENDING.approvalCode to false in consts.ts once the real copy lands.
+      */}
+      {PENDING.approvalCode && (
+        <div class="max-w-3xl">
+          <Pending>
+            the representative disclosure, the advertising reference code for this site, and a
+            "does not constitute personalised financial advice" line are still outstanding.
+          </Pending>
+        </div>
+      )}
+    </div>
+  </div>
+</footer>

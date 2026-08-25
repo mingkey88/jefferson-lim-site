@@ -1,0 +1,103 @@
+---
+import { u } from "../lib/url";
+import { SITE, NAV } from "../consts";
+import Monogram from "./Monogram.astro";
+
+// Astro.url.pathname includes the deploy base, so strip it before comparing
+// against the clean paths in NAV.
+const BASE = import.meta.env.BASE_URL.replace(/\/+$/, "");
+const path = Astro.url.pathname.replace(BASE, "").replace(/\/+$/, "") || "/";
+const isCurrent = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
+---
+
+<header class="sticky top-0 z-40 border-b border-gold/15 bg-ink-950/85 backdrop-blur-md">
+  <nav class="shell flex items-center justify-between gap-6 py-3.5" aria-label="Primary">
+    <a href={u("/")} class="flex items-center gap-3" aria-label={`${SITE.name} — home`}>
+      <Monogram size={42} />
+      <span class="hidden font-display text-lg italic tracking-tight text-gold sm:block">
+        {SITE.name}
+      </span>
+    </a>
+
+    <ul class="hidden items-center gap-2.5 lg:flex">
+      {NAV.map((item) => (
+        <li>
+          <a href={u(item.href)} class="pill" aria-current={isCurrent(item.href) ? "page" : undefined}>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <button
+      id="navToggle"
+      type="button"
+      class="flex items-center gap-2.5 rounded-full border border-gold/40 px-4 py-3 text-gold lg:hidden"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="navMenu"
+    >
+      <span class="text-xs font-semibold uppercase tracking-[0.16em]">Menu</span>
+      <span class="flex flex-col gap-[3px]" aria-hidden="true">
+        <span class="block h-px w-4 bg-gold"></span>
+        <span class="block h-px w-4 bg-gold"></span>
+        <span class="block h-px w-4 bg-gold"></span>
+      </span>
+    </button>
+  </nav>
+
+  <div id="navMenu" class="hidden border-t border-gold/15 lg:hidden">
+    <ul class="shell flex flex-col gap-2.5 py-5">
+      {NAV.map((item) => (
+        <li>
+          <a
+            href={u(item.href)}
+            class="pill w-full"
+            aria-current={isCurrent(item.href) ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <script is:inline>
+    (function () {
+      var btn = document.getElementById("navToggle");
+      var menu = document.getElementById("navMenu");
+      if (!btn || !menu) return;
+
+      function setOpen(open) {
+        menu.classList.toggle("hidden", !open);
+        btn.setAttribute("aria-expanded", String(open));
+        btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      }
+
+      btn.addEventListener("click", function () {
+        setOpen(menu.classList.contains("hidden"));
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !menu.classList.contains("hidden")) {
+          setOpen(false);
+          btn.focus();
+        }
+      });
+
+      document.addEventListener("click", function (e) {
+        if (menu.classList.contains("hidden")) return;
+        if (!menu.contains(e.target) && !btn.contains(e.target)) setOpen(false);
+      });
+
+      // Tablet rotation past the lg breakpoint hides the menu via CSS, which
+      // would otherwise leave aria-expanded reporting "true" forever.
+      var desktop = window.matchMedia("(min-width: 1024px)");
+      (desktop.addEventListener || desktop.addListener).call(
+        desktop,
+        "change",
+        function (e) { if (e.matches) setOpen(false); }
+      );
+    })();
+  </script>
+</header>

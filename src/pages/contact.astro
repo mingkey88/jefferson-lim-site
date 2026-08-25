@@ -1,0 +1,277 @@
+---
+import { u } from "../lib/url";
+import Base from "../layouts/Base.astro";
+import Guilloche from "../components/Guilloche.astro";
+import Icon from "../components/Icon.astro";
+import Pending from "../components/Pending.astro";
+import { CONTACT, SOCIAL } from "../consts";
+
+/**
+ * TODO before launch: the enquiry form posts via Netlify Forms (data-netlify).
+ * If this deploys anywhere other than Netlify, the action must be replaced with
+ * a real handler — otherwise submissions go nowhere.
+ */
+
+// GitHub Pages is static hosting with no form processing, so on the staging
+// build the submit control is replaced with the direct contact details rather
+// than a button that silently discards enquiries.
+const IS_STAGING = import.meta.env.PUBLIC_STAGING === "true";
+
+const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linkedin" } as const;
+---
+
+<Base
+  title="Contact Jefferson Lim | Financial Consultant, Singapore"
+  description="Get in touch with Jefferson Lim — financial consultant with Lee Jue Rong & Associates, an agency unit of Prudential Assurance Company Singapore."
+>
+  <!-- ===================== HERO ===================== -->
+  <section class="relative isolate overflow-hidden border-b border-gold/15">
+    <div
+      class="pointer-events-none absolute -left-[18%] top-1/2 hidden w-[32rem] -translate-y-1/2 md:block"
+      aria-hidden="true"
+    >
+      <Guilloche rings={5} opacity={0.26} />
+    </div>
+    <div class="shell relative grid gap-12 py-20 md:grid-cols-12 md:py-24">
+      <div class="md:col-span-7">
+        <h1 class="enter">Tell me what is<br class="hidden md:block" /> on your mind.</h1>
+        <div class="rule-orn enter mt-8 max-w-sm" style="animation-delay:.12s">
+          <span class="rule-orn__mark"></span>
+        </div>
+        <p class="lede enter prose-measure mt-7" style="animation-delay:.2s">
+          Fill in the form below and I will be in touch. A first conversation costs nothing and
+          commits you to nothing.
+        </p>
+      </div>
+
+      <div class="enter md:col-span-5 md:pt-4" style="animation-delay:.3s">
+        <p class="meta text-gold">Or reach me directly</p>
+        <ul class="mt-5 space-y-4">
+          <li class="flex items-center gap-3.5">
+            <Icon name="phone" size={18} class="shrink-0 text-gold" stroke={1.3} />
+            <a href={CONTACT.phoneHref} class="link-underline">{CONTACT.phone}</a>
+          </li>
+          <li class="flex items-center gap-3.5">
+            <Icon name="mail" size={18} class="shrink-0 text-gold" stroke={1.3} />
+            <a href={CONTACT.emailHref} class="link-underline break-all text-sm">{CONTACT.email}</a>
+          </li>
+          <li class="flex gap-3.5">
+            <Icon name="pin" size={18} class="mt-1 shrink-0 text-gold" stroke={1.3} />
+            <p class="dim text-sm">
+              {CONTACT.addressLines.map((l) => (<span class="block">{l}</span>))}
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FORM + DETAILS ===================== -->
+  <section class="shell py-16 md:py-24">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-14">
+      <!-- Form -->
+      <div class="reveal lg:col-span-7">
+        <form
+          name="enquiry"
+          aria-label="Enquiry form"
+          method={IS_STAGING ? undefined : "POST"}
+          data-netlify={IS_STAGING ? undefined : "true"}
+          netlify-honeypot={IS_STAGING ? undefined : "bot-field"}
+          onsubmit={IS_STAGING ? "return false;" : undefined}
+          class="plate p-7 md:p-9"
+        >
+          <input type="hidden" name="form-name" value="enquiry" />
+          <p class="hidden">
+            <label>Leave this field empty <input name="bot-field" /></label>
+          </p>
+
+          <fieldset>
+            <legend class="meta text-gold">Are we already working together?</legend>
+            <div class="mt-4 flex flex-wrap gap-x-7 gap-y-3">
+              <label class="choice">
+                <input type="radio" name="client-type" value="New enquiry" checked />
+                <span>New enquiry</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="client-type" value="Existing client" />
+                <span>Existing client</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <hr class="hairline my-8" />
+
+          <p class="mut mb-5 text-xs">Fields marked * are required.</p>
+
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label class="field-label" for="first-name">First name <abbr title="required" class="text-gold no-underline">*</abbr></label>
+              <input class="field" id="first-name" name="first-name" type="text" autocomplete="given-name" required />
+            </div>
+            <div>
+              <label class="field-label" for="last-name">Last name <abbr title="required" class="text-gold no-underline">*</abbr></label>
+              <input class="field" id="last-name" name="last-name" type="text" autocomplete="family-name" required />
+            </div>
+            <div>
+              <label class="field-label" for="email">Email <abbr title="required" class="text-gold no-underline">*</abbr></label>
+              <input class="field" id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div>
+              <label class="field-label" for="phone">Mobile number</label>
+              <input class="field" id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <label class="field-label" for="message">Message <abbr title="required" class="text-gold no-underline">*</abbr></label>
+            <p class="mut mb-2 text-xs">Even a rough sense of it is enough to start.</p>
+            <textarea class="field" id="message" name="message" rows="5" required></textarea>
+          </div>
+
+          <hr class="hairline my-8" />
+
+          <div class="space-y-4">
+            <!--
+              The privacy-notice link sits OUTSIDE the label: nested inside it,
+              tapping the link on a phone would toggle a required legal consent.
+            -->
+            <div class="flex items-start gap-3">
+              <label class="choice shrink-0" for="consent">
+                <input type="checkbox" id="consent" name="consent" required aria-describedby="consent-text" />
+                <span class="sr-only">I consent to my personal data being used to contact me</span>
+              </label>
+              <p id="consent-text" class="dim py-[0.55rem] text-sm">
+                I consent to Jefferson Lim and Prudential Assurance Company Singapore collecting and
+                using my personal data to contact me about the products and services I have asked
+                about, in line with the
+                <a
+                  href="https://www.prudential.com.sg/Privacy-Notice"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link-underline text-sm"
+                >Prudential Data Privacy Notice</a><abbr title="required" class="text-gold no-underline">*</abbr>
+              </p>
+            </div>
+
+            <label class="choice items-start" for="subscribe">
+              <input type="checkbox" id="subscribe" name="subscribe" class="mt-1" />
+              <span class="dim text-sm">
+                Subscribe to my mailing list — occasional news, updates and events. No more than a
+                few times a year, and you can stop any time.
+              </span>
+            </label>
+          </div>
+
+          <div class="mt-6">
+            <Pending>
+              the consent wording above must be replaced with Prudential's approved PDPA template
+              before this form goes live.
+            </Pending>
+          </div>
+
+          {IS_STAGING ? (
+            <div class="mt-8 border border-gold/30 bg-gold/5 px-5 py-5">
+              <p class="text-sm text-paper">
+                This is a design preview — the form is not connected yet.
+              </p>
+              <p class="dim mt-2 text-sm">
+                On the live site this sends straight to Jefferson. To reach him now:
+              </p>
+              <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
+                <a href={CONTACT.phoneHref} class="link-underline">{CONTACT.phone}</a>
+                <a href={CONTACT.emailHref} class="link-underline break-all text-sm">
+                  {CONTACT.email}
+                </a>
+              </div>
+            </div>
+          ) : (
+            <button type="submit" class="btn btn-gold mt-8 w-full sm:w-auto">
+              Send my enquiry
+              <Icon name="arrow" size={16} stroke={1.7} />
+            </button>
+          )}
+        </form>
+      </div>
+
+      <!-- Details -->
+      <aside class="reveal lg:col-span-5">
+        <div class="plate-deep relative isolate overflow-hidden p-7 md:p-9 lg:sticky lg:top-24">
+          <div class="pointer-events-none absolute -right-20 -top-20 w-64 opacity-50" aria-hidden="true">
+            <Guilloche rings={3} opacity={0.3} />
+          </div>
+
+          <h2 class="relative text-[1.75rem]">{CONTACT.name}</h2>
+          <p class="relative mt-1 font-display text-lg italic text-paper">{CONTACT.role}</p>
+          <div class="rule-orn relative mt-5"><span class="rule-orn__mark"></span></div>
+
+          <address class="relative mt-6 space-y-5 not-italic">
+            <div>
+              <p class="text-paper">{CONTACT.agency}</p>
+              <p class="mut mt-1 text-sm">{CONTACT.agencyNote}</p>
+            </div>
+
+            <div class="flex gap-3.5">
+              <Icon name="pin" size={18} class="mt-0.5 shrink-0 text-gold" stroke={1.3} />
+              <p class="dim text-sm">
+                {CONTACT.addressLines.map((l) => (<span class="block">{l}</span>))}
+              </p>
+            </div>
+
+            <div class="flex gap-3.5">
+              <Icon name="phone" size={18} class="mt-0.5 shrink-0 text-gold" stroke={1.3} />
+              <a href={CONTACT.phoneHref} class="link-underline text-sm">{CONTACT.phone}</a>
+            </div>
+
+            <div class="flex gap-3.5">
+              <Icon name="mail" size={18} class="mt-0.5 shrink-0 text-gold" stroke={1.3} />
+              <a href={CONTACT.emailHref} class="link-underline break-all text-sm">{CONTACT.email}</a>
+            </div>
+          </address>
+
+          <hr class="hairline relative my-8" />
+
+          <div class="relative flex items-start gap-6">
+            <img
+              src={u("/jl-ecard-qr.svg")}
+              alt="QR code linking to Jefferson Lim's digital name card"
+              width="120"
+              height="120"
+              loading="lazy"
+              class="h-28 w-28 shrink-0 bg-paper p-2"
+            />
+            <div>
+              <p class="text-sm text-paper">Save my details to your phone</p>
+              <p class="mut mt-1.5 text-xs">
+                Scan for my digital name card, or download the contact file straight to your phone.
+              </p>
+              <a href={u("/jefferson-lim.vcf")} download class="link-underline mt-3 text-sm">
+                Download my contact card
+              </a>
+            </div>
+          </div>
+
+          <hr class="hairline relative my-8" />
+
+          <div class="relative">
+            <p class="meta text-gold">Find me</p>
+            <ul class="mt-4 flex items-center gap-3">
+              {SOCIAL.map((s) => (
+                <li>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex h-11 w-11 items-center justify-center rounded-full border border-gold/35 text-gold transition-colors hover:border-gold hover:bg-gold hover:text-ink-950"
+                    aria-label={`${s.label} — ${s.handle}`}
+                  >
+                    <Icon name={iconFor[s.label as keyof typeof iconFor]} size={18} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>

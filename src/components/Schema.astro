@@ -1,0 +1,89 @@
+---
+import { SITE, CONTACT, SOCIAL } from "../consts";
+
+/**
+ * Person + FinancialService graph. Person carries the branded "Jefferson Lim"
+ * query, FinancialService (a LocalBusiness subtype) carries the NAP.
+ *
+ * Deliberately omitted until confirmed by Jefferson:
+ *  - geo coordinates (a wrong one is worse than none)
+ *  - priceRange (no published fees; inventing a band is a claim)
+ *  - the Facebook profile (no URL supplied — see SOCIAL_PENDING in consts.ts)
+ */
+const personId = `${SITE.url}/#jefferson-lim`;
+const practiceId = `${SITE.url}/#practice`;
+
+const address = {
+  "@type": "PostalAddress",
+  streetAddress: "1 Pasir Panjang Road, #05-01V Labrador Tower",
+  addressLocality: "Singapore",
+  postalCode: "118497",
+  addressCountry: "SG",
+};
+
+const sameAs = SOCIAL.map((s) => s.href);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": personId,
+      name: CONTACT.name,
+      jobTitle: CONTACT.role,
+      url: SITE.url,
+      image: `${SITE.url}/jefferson-portrait.webp`,
+      telephone: "+65 9298 8326",
+      email: CONTACT.email,
+      worksFor: { "@id": practiceId },
+      address,
+      knowsAbout: [
+        "Financial planning",
+        "Estate planning",
+        "Retirement planning",
+        "Protection and insurance planning",
+        "Investment planning",
+      ],
+      sameAs,
+    },
+    {
+      "@type": "FinancialService",
+      "@id": practiceId,
+      name: `${CONTACT.name} — ${CONTACT.role}`,
+      legalName: CONTACT.agency,
+      description:
+        "An agency unit of Prudential Assurance Company Singapore. Financial, protection, retirement and estate planning for Singapore families.",
+      url: SITE.url,
+      image: `${SITE.url}/og-jefferson-lim.jpg`,
+      telephone: "+65 9298 8326",
+      email: CONTACT.email,
+      currenciesAccepted: "SGD",
+      address,
+      areaServed: { "@type": "Country", name: "Singapore" },
+      employee: { "@id": personId },
+      parentOrganization: {
+        "@type": "Organization",
+        name: "Prudential Assurance Company Singapore",
+        url: "https://www.prudential.com.sg/",
+      },
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Financial planning services",
+        itemListElement: [
+          "Financial Goals Defined",
+          "Budget Managed",
+          "Protection Secured",
+          "Investment Growing",
+          "Retirement Planned",
+        ].map((name) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name },
+        })),
+      },
+      sameAs,
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

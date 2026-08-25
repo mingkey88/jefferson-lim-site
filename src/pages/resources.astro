@@ -1,0 +1,231 @@
+---
+import { u } from "../lib/url";
+import Base from "../layouts/Base.astro";
+import Guilloche from "../components/Guilloche.astro";
+import Icon from "../components/Icon.astro";
+import Pending from "../components/Pending.astro";
+import { CONTACT } from "../consts";
+
+/** Six Areas of Financial Planning. Reproduced from Jefferson's chart. */
+const areas = [
+  {
+    t: "Financial Position",
+    groups: [
+      { g: "Cash Management", items: ["Cash flow analysis", "Cash reserve management", "Uneven cash flow planning", "Discretionary income"] },
+      { g: "Debt Management", items: ["Current debt analysis", "Access to credit*"] },
+      { g: "Net Worth Analysis", items: ["Assets vs. liabilities"] },
+    ],
+  },
+  {
+    t: "Protection Planning",
+    groups: [
+      { g: "Core Insurance Coverage", items: ["Medical and health", "Critical illness", "Disability income", "Life", "Long-term care", "Home and auto*", "Lifestyle and domestic*"] },
+      { g: "Additional Considerations", items: ["Beneficiary designations", "Policy loans", "Deductibles", "Cash reserves"] },
+    ],
+  },
+  {
+    t: "Investment Planning",
+    groups: [
+      { g: "Core Investment Strategy", items: ["Risk tolerance", "Asset allocation", "Diversification", "Tax efficiency*", "Cost basis analysis*", "Investment horizon", "Dollar cost averaging"] },
+      { g: "Additional Considerations", items: ["Education funding", "Market timing issues"] },
+    ],
+  },
+  {
+    t: "Tax Planning*",
+    groups: [
+      { g: "Tax Strategies", items: ["Tax efficiencies", "Tax deferral", "Filing status", "Effects of liquidations", "Ownership structures", "Tax anticipation", "SRS", "CPF"] },
+      { g: "Additional Considerations", items: ["Stock option planning"] },
+    ],
+  },
+  {
+    t: "Retirement Planning",
+    groups: [
+      { g: "Accumulation Phase", items: ["Savings and investment accounts", "Timing retirement", "Projecting benefits and cash flows"] },
+      { g: "Retirement Phase", items: ["CPF LIFE", "Income transition", "Medical and health insurance coverage"] },
+    ],
+  },
+  {
+    t: "Estate Planning*",
+    groups: [
+      { g: "Core Components", items: ["Wills", "Trusts", "ACP", "LPA", "Succession planning", "Special needs planning", "Asset ownership", "Liquidity needs", "Charitable giving", "Tax-efficient legacy planning"] },
+    ],
+  },
+];
+
+/** Wealth Pyramid — apex first, so the DOM reads top-down like the chart. */
+const pyramid = [
+  { t: "Philanthropy", items: ["Multi-generation", "Multi-jurisdiction"], w: "38%" },
+  { t: "Wealth Creation", items: ["Lasting Power of Attorney", "Trust", "Advance Medical Directive"], w: "52%" },
+  { t: "Wealth Distribution", items: ["Intestate Succession Act", "Insurance nomination", "CPF nomination", "Will"], w: "66%" },
+  { t: "Wealth Accumulation & Growth", items: ["Children's education", "Capital appreciation", "Investment income", "Retirement income", "Medium-term savings"], w: "80%" },
+  { t: "Wealth Preservation", items: ["Asset protection", "Buy-sell agreement", "Credit protection", "Director protection", "Key person", "Employee benefits", "Executive bonus"], w: "92%" },
+  { t: "Wealth Protection", items: ["Medical", "Accident", "Long-term care", "Death", "Total & permanent disability", "Critical illness", "Outstanding mortgage"], w: "100%" },
+];
+---
+
+<Base
+  title="My Resources | Jefferson Lim, Financial Consultant"
+  description="Two frameworks Jefferson Lim uses with clients: the Six Areas of Financial Planning, and the Wealth Pyramid — from protection at the base to philanthropy at the apex."
+>
+  <!-- ===================== HERO ===================== -->
+  <section class="relative isolate overflow-hidden border-b border-gold/15">
+    <div
+      class="pointer-events-none absolute -right-[20%] top-1/2 hidden w-[36rem] -translate-y-1/2 md:block"
+      aria-hidden="true"
+    >
+      <Guilloche rings={5} opacity={0.3} />
+    </div>
+    <div class="shell relative py-20 md:py-28">
+      <h1 class="enter max-w-3xl">The maps I plan from.</h1>
+      <div class="rule-orn enter mt-8 max-w-sm" style="animation-delay:.12s">
+        <span class="rule-orn__mark"></span>
+      </div>
+      <p class="lede enter prose-measure mt-7" style="animation-delay:.2s">
+        These are the two frameworks I work through with every client. I am publishing them here
+        because you should be able to see the whole board before anyone recommends a single move on
+        it — including the parts of your plan I am not involved in.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== SIX AREAS ===================== -->
+  <section class="shell py-20 md:py-28">
+    <div class="grid gap-8 md:grid-cols-12">
+      <div class="reveal md:col-span-5">
+        <div class="flex items-center gap-4">
+          <Icon name="document" size={30} class="text-gold" stroke={1.2} />
+          <h2>Six Areas of Financial Planning</h2>
+        </div>
+      </div>
+      <p class="reveal dim md:col-span-7 md:pt-2">
+        A complete financial position touches all six. Most people have three or four covered and
+        have never audited the rest — which is usually where the gap turns out to be.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-px overflow-hidden border border-gold/20 bg-gold/20 md:grid-cols-2 lg:grid-cols-3">
+      {areas.map((a, i) => (
+        <section class="reveal bg-ink-850 p-7 md:p-8" style={`transition-delay:${i * 55}ms`}>
+          <h3 class="text-[1.15rem]">{a.t}</h3>
+          <div class="rule-orn mt-4"><span class="rule-orn__mark"></span></div>
+          {a.groups.map((g) => (
+            <div class="mt-6">
+              <p class="meta">{g.g}</p>
+              <ul class="dim mt-2.5 space-y-1.5 text-sm">
+                {g.items.map((it) => (
+                  <li class="flex gap-2.5">
+                    <span class="mt-[9px] h-1 w-1 shrink-0 rotate-45 border border-gold" aria-hidden="true"></span>
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      ))}
+    </div>
+
+    <p class="mut mt-6 text-xs">
+      * Seek the guidance of your professional tax and/or legal adviser before making any decisions.
+    </p>
+  </section>
+
+  <!-- ===================== WEALTH PYRAMID ===================== -->
+  <section class="border-y border-gold/15 bg-ink-850">
+    <div class="shell py-20 md:py-28">
+      <div class="grid gap-8 md:grid-cols-12">
+        <div class="reveal md:col-span-5">
+          <div class="flex items-center gap-4">
+            <Icon name="pyramid" size={30} class="text-gold" stroke={1.2} />
+            <h2>The Wealth Pyramid</h2>
+          </div>
+        </div>
+        <p class="reveal dim md:col-span-7 md:pt-2">
+          Built from the bottom up. Protection is the base because everything above it collapses
+          without it — and no one reaches the apex by starting there.
+        </p>
+      </div>
+
+      <ol class="mt-14 space-y-3">
+        {pyramid.map((tier, i) => (
+          <li
+            class="reveal mx-auto w-full"
+            style={`transition-delay:${i * 70}ms; --tier-w:${tier.w}`}
+          >
+            <div class="tier border-t border-gold/25 py-5 md:py-6">
+              <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+                <h3 class="text-[1.05rem] md:text-[1.2rem]">{tier.t}</h3>
+                <span class="denom text-sm">
+                  {String(pyramid.length - i).padStart(2, "0")}
+                </span>
+              </div>
+              <ul class="dim mt-3 flex flex-wrap gap-x-6 gap-y-1.5 text-[0.85rem]">
+                {tier.items.map((it) => (
+                  <li class="flex items-center gap-2.5">
+                    <span class="h-1 w-1 shrink-0 rotate-45 border border-gold" aria-hidden="true"></span>
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p class="mut mt-8 text-center text-xs">Base of the pyramid is built first.</p>
+    </div>
+  </section>
+
+  <!-- ===================== COMPLIANCE NOTE ===================== -->
+  <section class="shell py-16 md:py-20">
+    <div class="mx-auto max-w-3xl">
+      <Pending>
+        both frameworks were rebuilt as responsive text from Jefferson's chart artwork and need a
+        line-by-line check against the approved originals — note the "Wealth Creation" tier lists
+        LPA, Trust and AMD, which look like succession instruments, and several Six Areas entries
+        (filing status, cost basis analysis) read as US tax concepts. The Prudential approval code
+        from that artwork must also be reinstated.
+      </Pending>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <section class="relative isolate overflow-hidden border-t border-gold/20 bg-ink-950">
+    <div
+      class="pointer-events-none absolute left-1/2 top-1/2 w-[34rem] -translate-x-1/2 -translate-y-1/2"
+      aria-hidden="true"
+    >
+      <Guilloche rings={4} opacity={0.2} />
+    </div>
+    <div class="shell relative py-24 text-center md:py-28">
+      <h2 class="mx-auto max-w-2xl">Want to know which parts you already have?</h2>
+      <p class="dim mx-auto mt-6 max-w-xl">
+        Bring what you have. We will mark up both maps together and you will leave knowing exactly
+        where the gaps are, whether or not you do anything about them with me.
+      </p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href={u("/contact")} class="btn btn-gold">
+          Start a conversation
+          <Icon name="arrow" size={16} stroke={1.7} />
+        </a>
+        <a href={CONTACT.phoneHref} class="btn btn-outline">
+          <Icon name="phone" size={15} stroke={1.6} />
+          {CONTACT.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* The shape carries the meaning, so it must survive small screens too — a
+     72% floor keeps the narrow upper tiers readable instead of switching the
+     whole framework to a flat list below 900px. */
+  .tier {
+    width: max(var(--tier-w), 72%);
+    margin-inline: auto;
+  }
+  @media (min-width: 900px) {
+    .tier { width: var(--tier-w); }
+  }
+</style>

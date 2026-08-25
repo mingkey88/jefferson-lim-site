@@ -1,0 +1,39 @@
+---
+import { u } from "../lib/url";
+import Base from "../layouts/Base.astro";
+import Guilloche from "../components/Guilloche.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<Base
+  robots="noindex, follow"
+  title="Page Not Found | Jefferson Lim"
+  description="This page could not be found. Return to Jefferson Lim's practice site to continue."
+>
+  <section class="relative isolate overflow-hidden">
+    <div
+      class="pointer-events-none absolute left-1/2 top-1/2 w-[38rem] -translate-x-1/2 -translate-y-1/2"
+      aria-hidden="true"
+    >
+      <Guilloche rings={5} opacity={0.24} />
+    </div>
+
+    <div class="shell relative flex min-h-[72svh] flex-col items-start justify-center py-24">
+      <p class="denom text-7xl md:text-8xl">404</p>
+      <h1 class="enter mt-6 max-w-2xl">This page is not here.</h1>
+      <div class="rule-orn enter mt-8 max-w-xs" style="animation-delay:.12s">
+        <span class="rule-orn__mark"></span>
+      </div>
+      <p class="lede enter prose-measure mt-7" style="animation-delay:.2s">
+        The link may be outdated, or the page has moved. Here is where to go instead.
+      </p>
+      <div class="enter mt-10 flex flex-wrap gap-4" style="animation-delay:.28s">
+        <a href={u("/")} class="btn btn-gold">
+          Back to About Me
+          <Icon name="arrow" size={16} stroke={1.7} />
+        </a>
+        <a href={u("/contact")} class="btn btn-outline">Start a conversation</a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+
+# Local tooling state
+.claude/settings.local.json
+.remember/
+.playwright-mcp/
+
+# Review screenshots produced during the build
+/*.png
+/*.jpg
