@@ -48,6 +48,34 @@ if (read("src/pages/ad-personal.astro").includes("needs its own Prudential appro
   blockers.push("/ad-personal has no approval code of its own (it is a new creative).");
 }
 
+// PhotoSlot deliberately renders in production so Jefferson can review the
+// layout on the staging preview, which is a production build. Nothing else
+// stops those grey boxes reaching a live site, so the gate lives here.
+// Counted from the built output, because one <PhotoSlot> inside a loop
+// renders many.
+const builtPages = [
+  "dist/index.html",
+  "dist/services/index.html",
+  "dist/contact/index.html",
+];
+const renderedSlots = builtPages.reduce(
+  (n, f) => n + (read(f).match(/Photo to come/g) ?? []).length,
+  0
+);
+const sourceSlots = ["src/pages/index.astro", "src/pages/services.astro", "src/pages/contact.astro"]
+  .reduce((n, f) => n + (read(f).match(/<PhotoSlot/g) ?? []).length, 0);
+
+if (sourceSlots > 0) {
+  const count = renderedSlots || sourceSlots;
+  const how = renderedSlots ? `${count} photo placeholders` : `${count} PhotoSlot usages`;
+  blockers.push(
+    `${how} still unfilled.\n` +
+      "     They render in production, so launching now puts grey \"Photo to come\"\n" +
+      "     boxes on a regulated site. Replace each <PhotoSlot> with a real image,\n" +
+      "     or delete the ones Jefferson decides against."
+  );
+}
+
 if (read("src/pages/resources.astro").includes("line-by-line check")) {
   blockers.push(
     "Six Areas + Wealth Pyramid not yet verified against the approved chart artwork."

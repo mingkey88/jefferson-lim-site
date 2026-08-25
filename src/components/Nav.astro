@@ -29,6 +29,14 @@ const isCurrent = (href: string) => (href === "/" ? path === "/" : path.startsWi
       ))}
     </ul>
 
+    <div class="flex items-center gap-2.5 md:hidden">
+      <a
+        href={u("/contact")}
+        class="pill"
+        style="padding-block:0.7rem"
+        aria-label="Contact Jefferson"
+      >Contact</a>
+
     <button
       id="navToggle"
       type="button"
@@ -44,6 +52,7 @@ const isCurrent = (href: string) => (href === "/" ? path === "/" : path.startsWi
         <span class="block h-px w-4 bg-gold"></span>
       </span>
     </button>
+    </div>
   </nav>
 
   <div id="navMenu" class="hidden border-t border-gold/15 md:hidden">

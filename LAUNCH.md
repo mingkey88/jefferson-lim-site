@@ -15,6 +15,7 @@ Nothing below can be written by anyone else. On a Prudential-regulated site, inv
 | 3 | **PDPA consent wording** — Prudential's approved template | `src/pages/contact.astro`, replacing the current placeholder |
 | 4 | **Approval code for `/ad-personal`** — this is a new creative, so the old funnel's `AT27Sep24FF27` does not cover it | `src/pages/ad-personal.astro` |
 | 5 | **Line-by-line check of the two Resources frameworks** against the approved chart artwork | `src/pages/resources.astro` |
+| 6 | **Photographs for the 10 reserved slots**, or a decision to drop some | `<PhotoSlot>` in index / services / contact |
 
 ### Two specific things to ask him about
 

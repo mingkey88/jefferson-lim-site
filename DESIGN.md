@@ -54,7 +54,9 @@ Carried by **gold hairlines, not boxes**.
 - `.plate` / `.plate-deep` — a raised panel bounded by a gold hairline. Used sparingly; **never nested**.
 - `.shell` (76rem) and `.shell-tight` (58rem) are the only containers.
 
-Same-size icon-heading-text cards are not the page structure anywhere. The Six Areas grid is a ruled table (`gap-px` over a gold ground); the Wealth Pyramid and the five pillars are hairline-separated schedules.
+Same-size icon-heading-text cards are not the page structure anywhere. The Six Areas grid is a ruled table (`gap-px` over a gold ground) and the Wealth Pyramid is a hairline-separated schedule.
+
+The five pillars on `/services` are the exception: at the client's request they are now alternating photograph-and-text rows, the layout his own brief drew. That is closer to the category default than the rest of the site, and it is a deliberate trade for the photographs he wanted. If the pictures never arrive, revert it to a hairline schedule rather than shipping the bands empty.
 
 ## The monogram
 

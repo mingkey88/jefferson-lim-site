@@ -1,0 +1,64 @@
+---
+import { u } from "../lib/url";
+import Base from "../layouts/Base.astro";
+import Guilloche from "../components/Guilloche.astro";
+import Monogram from "../components/Monogram.astro";
+import Icon from "../components/Icon.astro";
+import { CONTACT } from "../consts";
+---
+
+<Base
+  robots="noindex, follow"
+  title="Thank you | Jefferson Lim, Financial Consultant"
+  description="Your message has reached Jefferson Lim."
+>
+  <section class="relative isolate overflow-hidden">
+    <div
+      class="pointer-events-none absolute left-1/2 top-1/2 w-[40rem] -translate-x-1/2 -translate-y-1/2"
+      aria-hidden="true"
+    >
+      <Guilloche opacity={0.22} />
+    </div>
+
+    <div class="shell-tight relative flex min-h-[76svh] flex-col items-center justify-center py-24 text-center">
+      <Monogram size={56} class="mb-8" />
+
+      <h1 class="enter">Thank you.</h1>
+
+      <div class="rule-orn enter mx-auto mt-8 w-full max-w-xs" style="animation-delay:.12s">
+        <span class="rule-orn__mark"></span>
+      </div>
+
+      <p class="lede enter mx-auto mt-8 max-w-xl" style="animation-delay:.2s">
+        Your message has reached me. I read these myself, and I will reply personally, usually
+        within one working day.
+      </p>
+
+      <p class="dim enter mx-auto mt-5 max-w-xl" style="animation-delay:.26s">
+        If it is urgent, or you would rather talk than type, call or message me directly.
+      </p>
+
+      <div class="enter mt-10 flex flex-wrap items-center justify-center gap-4" style="animation-delay:.34s">
+        <a href={CONTACT.phoneHref} class="btn btn-gold">
+          <Icon name="phone" size={15} stroke={1.6} />
+          {CONTACT.phone}
+        </a>
+        <a
+          href={CONTACT.whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-outline"
+        >
+          Message on WhatsApp
+        </a>
+      </div>
+
+      <div class="enter mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3" style="animation-delay:.4s">
+        <a href={u("/jefferson-lim.vcf")} download class="link-underline text-sm">
+          Save my contact card
+        </a>
+        <a href={u("/")} class="link-underline text-sm">Back to About Me</a>
+      </div>
+    </div>
+  </section>
+</Base>

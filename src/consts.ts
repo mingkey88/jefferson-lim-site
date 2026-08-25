@@ -25,6 +25,7 @@ export const CONTACT = {
   phoneHref: "tel:+6592988326",
   email: "jeffersonlwn@pruadviser.com.sg",
   emailHref: "mailto:jeffersonlwn@pruadviser.com.sg",
+  whatsappHref: "https://wa.me/6592988326",
   ecardUrl: "https://sgnamecard.com.sg/prudential/c/8ml5lUcl60zy",
 };
 

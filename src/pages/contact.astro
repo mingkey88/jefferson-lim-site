@@ -55,6 +55,15 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
             <Icon name="mail" size={18} class="shrink-0 text-gold" stroke={1.3} />
             <a href={CONTACT.emailHref} class="link-underline break-all text-sm">{CONTACT.email}</a>
           </li>
+          <li class="flex items-center gap-3.5">
+            <Icon name="chat" size={18} class="shrink-0 text-gold" stroke={1.3} />
+            <a
+              href={CONTACT.whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-underline text-sm"
+            >Message on WhatsApp</a>
+          </li>
           <li class="flex gap-3.5">
             <Icon name="pin" size={18} class="mt-1 shrink-0 text-gold" stroke={1.3} />
             <p class="dim text-sm">
@@ -74,6 +83,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
         <form
           name="enquiry"
           aria-label="Enquiry form"
+          action={IS_STAGING ? undefined : u("/thank-you")}
           method={IS_STAGING ? undefined : "POST"}
           data-netlify={IS_STAGING ? undefined : "true"}
           netlify-honeypot={IS_STAGING ? undefined : "bot-field"}
@@ -114,7 +124,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
             </div>
             <div>
               <label class="field-label" for="email">Email <abbr title="required" class="text-gold no-underline">*</abbr></label>
-              <input class="field" id="email" name="email" type="email" autocomplete="email" required />
+              <input class="field" id="email" name="email" type="email" inputmode="email" autocomplete="email" required />
             </div>
             <div>
               <label class="field-label" for="phone">Mobile number</label>
