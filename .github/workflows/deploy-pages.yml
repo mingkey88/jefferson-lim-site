@@ -36,7 +36,12 @@ jobs:
           node-version: 22
           cache: npm
 
-      - run: npm ci
+      # `npm install`, not `npm ci`: sharp's optional binaries pull different
+      # transitive @emnapi packages on Linux than on the macOS machine the
+      # lockfile is generated on, which npm cannot represent in one lockfile.
+      # `npm ci` fails on that mismatch. This trades lockfile-exact installs for
+      # a build that works — acceptable for a static preview with no runtime deps.
+      - run: npm install --no-audit --no-fund
 
       - name: Build staging preview
         env:
