@@ -130,9 +130,10 @@ const steps = [
     <ol class="space-y-14 md:space-y-20">
       {pillars.map((p, i) => (
         <li class="reveal grid items-center gap-8 border-t border-gold/20 pt-12 md:grid-cols-12 md:gap-12 md:pt-16">
-          <PhotoSlot class={`md:col-span-5 ${i % 2 === 1 ? "md:order-2" : ""}`} label={p.photo} />
-
-          <div class={`md:col-span-7 ${i % 2 === 1 ? "md:order-1" : ""}`}>
+          {/* Text first in the DOM so a phone reads "01 Financial Goals Defined"
+              before the picture; md:order restores the alternating desktop
+              layout, photo left on odd-numbered pillars. */}
+          <div class={`md:col-span-7 ${i % 2 === 0 ? "md:order-2" : ""}`}>
             <div class="flex items-baseline gap-4">
               <span class="denom text-4xl md:text-5xl">{String(i + 1).padStart(2, "0")}</span>
               <h2 class="text-[1.75rem] md:text-[2.2rem]">{p.t}</h2>
@@ -154,6 +155,8 @@ const steps = [
               </div>
             )}
           </div>
+
+          <PhotoSlot class={`md:col-span-5 ${i % 2 === 0 ? "md:order-1" : ""}`} label={p.photo} />
         </li>
       ))}
     </ol>

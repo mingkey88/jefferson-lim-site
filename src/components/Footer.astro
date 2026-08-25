@@ -40,11 +40,13 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
       <div class="md:col-span-3">
         <h2 class="font-display text-lg text-gold">This site</h2>
         <div class="rule-orn mt-3 max-w-[7rem]"><span class="rule-orn__mark"></span></div>
-        <ul class="dim mt-4 space-y-2.5 text-sm">
+        <nav aria-label="Footer">
+        <ul class="dim mt-4 space-y-1 text-sm">
           {NAV.map((item) => (
-            <li><a href={u(item.href)} class="inline-block py-1.5 transition-colors hover:text-gold">{item.label}</a></li>
+            <li><a href={u(item.href)} class="inline-block py-2.5 transition-colors hover:text-gold">{item.label}</a></li>
           ))}
         </ul>
+        </nav>
       </div>
 
       <div class="md:col-span-5">

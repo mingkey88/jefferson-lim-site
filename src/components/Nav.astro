@@ -19,7 +19,7 @@ const isCurrent = (href: string) => (href === "/" ? path === "/" : path.startsWi
       </span>
     </a>
 
-    <ul class="hidden items-center gap-2.5 lg:flex">
+    <ul class="hidden items-center gap-2.5 md:flex">
       {NAV.map((item) => (
         <li>
           <a href={u(item.href)} class="pill" aria-current={isCurrent(item.href) ? "page" : undefined}>
@@ -32,7 +32,7 @@ const isCurrent = (href: string) => (href === "/" ? path === "/" : path.startsWi
     <button
       id="navToggle"
       type="button"
-      class="flex items-center gap-2.5 rounded-full border border-gold/40 px-4 py-3 text-gold lg:hidden"
+      class="flex items-center gap-2.5 rounded-full border border-gold/40 px-4 py-3.5 text-gold md:hidden"
       aria-label="Open menu"
       aria-expanded="false"
       aria-controls="navMenu"
@@ -46,7 +46,7 @@ const isCurrent = (href: string) => (href === "/" ? path === "/" : path.startsWi
     </button>
   </nav>
 
-  <div id="navMenu" class="hidden border-t border-gold/15 lg:hidden">
+  <div id="navMenu" class="hidden border-t border-gold/15 md:hidden">
     <ul class="shell flex flex-col gap-2.5 py-5">
       {NAV.map((item) => (
         <li>
@@ -92,7 +92,7 @@ const isCurrent = (href: string) => (href === "/" ? path === "/" : path.startsWi
 
       // Tablet rotation past the lg breakpoint hides the menu via CSS, which
       // would otherwise leave aria-expanded reporting "true" forever.
-      var desktop = window.matchMedia("(min-width: 1024px)");
+      var desktop = window.matchMedia("(min-width: 768px)");
       (desktop.addEventListener || desktop.addListener).call(
         desktop,
         "change",

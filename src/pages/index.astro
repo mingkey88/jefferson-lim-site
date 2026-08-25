@@ -110,7 +110,7 @@ const photoSlots = [
       </div>
 
       <ul
-        class="mut enter mt-14 flex flex-wrap items-center gap-y-2 text-xs uppercase tracking-[0.14em] [&>li:not(:last-child)]:mr-6 [&>li:not(:last-child)]:border-r [&>li:not(:last-child)]:border-gold/25 [&>li:not(:last-child)]:pr-6"
+        class="mut enter mt-14 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs uppercase tracking-[0.14em] xl:gap-x-0 xl:[&>li:not(:last-child)]:mr-6 xl:[&>li:not(:last-child)]:border-r xl:[&>li:not(:last-child)]:border-gold/25 xl:[&>li:not(:last-child)]:pr-6"
         style="animation-delay:.4s"
       >
         <li>Built a public hospital's finance function</li>
@@ -247,20 +247,20 @@ const photoSlots = [
     <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {photos.map((g, i) => (
         <li class="reveal" style={`transition-delay:${i * 70}ms`}>
-          <div class="border border-gold/20 p-2">
+          <figure class="border border-gold/20 p-2">
             <img
               src={g.src}
               srcset={g.srcset}
               sizes="(min-width: 1024px) 370px, (min-width: 640px) 45vw, 90vw"
-              alt={g.cap}
+              alt=""
               width={g.w}
               height={g.h}
               loading="lazy"
               decoding="async"
               class="aspect-[4/3] w-full object-cover"
             />
-          </div>
-          <p class="meta mt-3">{g.cap}</p>
+            <figcaption class="meta mt-3 px-0.5">{g.cap}</figcaption>
+          </figure>
         </li>
       ))}
       {photoSlots.map((label, i) => (
