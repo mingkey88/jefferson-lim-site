@@ -16,8 +16,8 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
         <Monogram size={54} />
         <p class="mt-5 font-display text-2xl italic text-gold">{SITE.name}</p>
         <p class="dim mt-3 max-w-xs text-sm">
-          Financial, legal and healthcare planning for Singapore families — so the people you
-          love are provided for.
+          Financial, legal and healthcare planning for Singapore families, so the people you love
+          are provided for.
         </p>
 
         <ul class="mt-7 flex items-center gap-3">
@@ -28,7 +28,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
                 target="_blank"
                 rel="me noopener noreferrer"
                 class="flex h-11 w-11 items-center justify-center rounded-full border border-gold/35 text-gold transition-colors hover:border-gold hover:bg-gold hover:text-ink-950"
-                aria-label={`${s.label} — ${s.handle}`}
+                aria-label={`${s.label}: ${s.handle}`}
               >
                 <Icon name={iconFor[s.label as keyof typeof iconFor]} size={17} />
               </a>
@@ -52,7 +52,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
         <div class="rule-orn mt-3 max-w-[7rem]"><span class="rule-orn__mark"></span></div>
 
         <address class="mt-4 space-y-1 text-sm not-italic">
-          <p class="text-paper">{CONTACT.name} — {CONTACT.role}</p>
+          <p class="text-paper">{CONTACT.name}, {CONTACT.role}</p>
           <p class="dim">{CONTACT.agency}</p>
           <p class="mut">{CONTACT.agencyNote}</p>
           <p class="dim pt-3">

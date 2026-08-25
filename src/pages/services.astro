@@ -3,34 +3,44 @@ import { u } from "../lib/url";
 import Base from "../layouts/Base.astro";
 import Guilloche from "../components/Guilloche.astro";
 import Icon from "../components/Icon.astro";
+import PhotoSlot from "../components/PhotoSlot.astro";
 import { CONTACT } from "../consts";
 
-/** The five pillars, in the order they are actually built. Client copy. */
+/**
+ * The five pillars, in the order they get built.
+ *
+ * NOTE: these descriptions are shortened from Jefferson's original wording.
+ * The meaning is unchanged but the phrasing is no longer his verbatim copy,
+ * so it needs a read-through with him before launch.
+ */
 const pillars = [
   {
     icon: "goals",
     t: "Financial Goals Defined",
     lead: "Clarity creates confidence.",
-    d: "Defining your financial goals helps you understand what truly matters — whether that is providing for your family, owning your dream home, funding your children's education, or retiring comfortably. With clear goals, every financial decision becomes more purposeful and aligned with the life you want to build.",
+    d: "Knowing what you are actually planning for. Your family, a home, your children's education, retiring on time. Once that is clear, every other decision gets easier.",
+    photo: "A planning conversation. Notes, a coffee, two people talking.",
   },
   {
     icon: "budget",
     t: "Budget Managed",
     lead: "The foundation of peace of mind.",
-    d: "A well-managed budget ensures your income is directed wisely toward daily needs, savings, investments and future priorities. By keeping spending intentional and sustainable, you gain greater control over your finances and reduce unnecessary stress.",
+    d: "Where your income actually goes each month. Daily needs, savings, investments, and what is coming later. This is the part most people skip.",
+    photo: "Something everyday and household. Kitchen table, laptop, bills.",
   },
   {
     icon: "protection",
     t: "Protection Secured",
     lead: "Stability during uncertain times.",
-    d: "Life is unpredictable, but proper protection holds steady. Insurance and risk management safeguard your loved ones, income, health and assets against unexpected events. Knowing your family is financially protected lets you focus on living with confidence.",
+    d: "Cover for the things that would otherwise undo everything else. Your income, your health, your family, your assets.",
+    photo: "A family together. Warm, ordinary, nothing staged.",
     detail: {
       label: "The legal and healthcare instruments a plan has to account for",
       items: [
         ["Will", "Your written wishes, recorded."],
-        ["LPA", "Lasting Power of Attorney — who decides, if you cannot."],
-        ["AMD", "Advance Medical Directive — your stance on life-sustaining treatment."],
-        ["ACP", "Advance Care Planning — your values, to guide those you love."],
+        ["LPA", "Lasting Power of Attorney. Who decides, if you cannot."],
+        ["AMD", "Advance Medical Directive. Your stance on life-sustaining treatment."],
+        ["ACP", "Advance Care Planning. Your values, to guide those you love."],
       ],
     },
   },
@@ -38,39 +48,32 @@ const pillars = [
     icon: "investment",
     t: "Investment Growing",
     lead: "Money that works while you do.",
-    d: "Through disciplined, long-term investing you can grow wealth steadily to reach important milestones and stay ahead of inflation. A well-structured strategy turns today's efforts into tomorrow's opportunities and financial freedom.",
+    d: "Putting money to work over a long horizon, so inflation does not quietly undo your savings.",
+    photo: "A long view. Skyline, horizon, something with distance in it.",
   },
   {
     icon: "retirement",
     t: "Retirement Planned",
     lead: "Life on your own terms.",
-    d: "Retirement planning is about creating freedom in the years ahead. By preparing early and consistently you build a sustainable income stream that supports the lifestyle you want, and can look forward to the future with confidence rather than uncertainty.",
+    d: "An income you can count on once you stop working, started early enough to be comfortable.",
+    photo: "Retirement as his clients picture it. Travel, grandchildren, time.",
   },
 ] as const;
 
 const steps = [
-  {
-    t: "A conversation",
-    d: "A no-obligation conversation about where you are now, what you would like to put in place, and what has been on your mind.",
-  },
-  {
-    t: "A written plan",
-    d: "If it makes sense to go further, I put together a written view of your situation and the options worth exploring, in language you can actually check.",
-  },
-  {
-    t: "You decide, at your pace",
-    d: "You choose what to act on, when, and how much. Reviews happen as your life and family change — not on a fixed sales calendar.",
-  },
+  { t: "A conversation", d: "We talk about where you are and what has been on your mind. No obligation." },
+  { t: "A written plan", d: "If it makes sense to continue, I write up your situation and the options worth looking at." },
+  { t: "You decide", d: "What to act on, when, and how much. Reviews happen when your life changes." },
 ];
 ---
 
 <Base
   title="My Services | Jefferson Lim, Financial Consultant"
-  description="Five pillars of financial planning — goals, budget, protection, investment and retirement — for Singapore families. Plan today, enjoy tomorrow."
+  description="Five pillars of financial planning for Singapore families: goals, budget, protection, investment and retirement. Plan today, enjoy tomorrow."
 >
   <!-- ===================== HERO ===================== -->
   <section class="relative isolate overflow-hidden border-b border-gold/15">
-    <div class="shell relative py-20 md:py-28">
+    <div class="shell relative py-20 md:py-24">
       <div class="grid items-center gap-14 md:grid-cols-12">
         <div class="md:col-span-7">
           <h1 class="enter">
@@ -81,8 +84,8 @@ const steps = [
             <span class="rule-orn__mark"></span>
           </div>
           <p class="lede enter prose-measure mt-7" style="animation-delay:.2s">
-            Good planning is not one product. It is five things standing up together. This is the
-            order I build them in, and we start wherever you actually are.
+            Good planning is not one product. It is five things standing up together, and we start
+            wherever you actually are.
           </p>
           <div class="enter mt-10" style="animation-delay:.3s">
             <a href={u("/contact")} class="btn btn-gold">
@@ -122,22 +125,22 @@ const steps = [
   </section>
 
   <!-- ===================== THE FIVE PILLARS ===================== -->
-  <section class="shell py-16 md:py-24">
-    <ol>
+  <section class="shell py-14 md:py-20">
+    <ol class="space-y-14 md:space-y-20">
       {pillars.map((p, i) => (
-        <li class="reveal grid gap-x-12 gap-y-6 border-t border-gold/20 py-12 md:grid-cols-12 md:py-16">
-          <div class="flex items-start gap-6 md:col-span-4 md:flex-col md:gap-7">
-            <span class="denom text-6xl md:text-7xl">{String(i + 1).padStart(2, "0")}</span>
-            <Icon name={p.icon} size={44} class="text-gold/70" stroke={1.1} />
-          </div>
+        <li class="reveal grid items-center gap-8 border-t border-gold/20 pt-12 md:grid-cols-12 md:gap-12 md:pt-16">
+          <PhotoSlot class={`md:col-span-5 ${i % 2 === 1 ? "md:order-2" : ""}`} label={p.photo} />
 
-          <div class="md:col-span-8">
-            <h2 class="text-[1.9rem] md:text-[2.35rem]">{p.t}</h2>
-            <p class="mt-3 font-display text-xl italic text-paper">{p.lead}</p>
-            <p class="dim prose-measure mt-5">{p.d}</p>
+          <div class={`md:col-span-7 ${i % 2 === 1 ? "md:order-1" : ""}`}>
+            <div class="flex items-baseline gap-4">
+              <span class="denom text-4xl md:text-5xl">{String(i + 1).padStart(2, "0")}</span>
+              <h2 class="text-[1.75rem] md:text-[2.2rem]">{p.t}</h2>
+            </div>
+            <p class="mt-3 font-display text-lg italic text-paper md:text-xl">{p.lead}</p>
+            <p class="dim prose-measure mt-4">{p.d}</p>
 
             {p.detail && (
-              <div class="plate mt-8 p-6 md:p-7">
+              <div class="plate mt-7 p-6">
                 <p class="meta text-gold">{p.detail.label}</p>
                 <dl class="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2">
                   {p.detail.items.map(([term, desc]) => (
@@ -157,14 +160,14 @@ const steps = [
 
   <!-- ===================== PROCESS ===================== -->
   <section class="border-y border-gold/15 bg-ink-850">
-    <div class="shell py-20 md:py-28">
+    <div class="shell py-20 md:py-24">
       <h2 class="reveal max-w-xl">A simple, unhurried process.</h2>
-      <div class="mt-14 grid gap-10 md:grid-cols-3 md:gap-12">
+      <div class="mt-12 grid gap-10 md:grid-cols-3 md:gap-12">
         {steps.map((s, i) => (
-          <div class="reveal" style={`transition-delay:${i * 90}ms`}>
+          <div class="reveal" style={`transition-delay:${i * 80}ms`}>
             <span class="denom text-4xl">{String(i + 1).padStart(2, "0")}</span>
             <h3 class="mt-4 border-t border-gold/20 pt-5">{s.t}</h3>
-            <p class="dim mt-3">{s.d}</p>
+            <p class="dim mt-2">{s.d}</p>
           </div>
         ))}
       </div>
@@ -179,7 +182,7 @@ const steps = [
     >
       <Guilloche rings={4} opacity={0.2} />
     </div>
-    <div class="shell relative py-24 text-center md:py-32">
+    <div class="shell relative py-24 text-center md:py-28">
       <h2 class="mx-auto max-w-2xl">Not sure which of the five you are missing?</h2>
       <p class="dim mx-auto mt-6 max-w-xl">
         That is normal, and it is exactly what a first conversation is for.

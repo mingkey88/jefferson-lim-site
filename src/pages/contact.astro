@@ -3,6 +3,7 @@ import { u } from "../lib/url";
 import Base from "../layouts/Base.astro";
 import Guilloche from "../components/Guilloche.astro";
 import Icon from "../components/Icon.astro";
+import PhotoSlot from "../components/PhotoSlot.astro";
 import Pending from "../components/Pending.astro";
 import { CONTACT, SOCIAL } from "../consts";
 
@@ -22,7 +23,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
 
 <Base
   title="Contact Jefferson Lim | Financial Consultant, Singapore"
-  description="Get in touch with Jefferson Lim — financial consultant with Lee Jue Rong & Associates, an agency unit of Prudential Assurance Company Singapore."
+  description="Get in touch with Jefferson Lim, financial consultant with Lee Jue Rong & Associates, an agency unit of Prudential Assurance Company Singapore."
 >
   <!-- ===================== HERO ===================== -->
   <section class="relative isolate overflow-hidden border-b border-gold/15">
@@ -39,8 +40,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
           <span class="rule-orn__mark"></span>
         </div>
         <p class="lede enter prose-measure mt-7" style="animation-delay:.2s">
-          Fill in the form below and I will be in touch. A first conversation costs nothing and
-          commits you to nothing.
+          Fill in the form below and I will be in touch. A first conversation costs nothing.
         </p>
       </div>
 
@@ -156,8 +156,8 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
             <label class="choice items-start" for="subscribe">
               <input type="checkbox" id="subscribe" name="subscribe" class="mt-1" />
               <span class="dim text-sm">
-                Subscribe to my mailing list — occasional news, updates and events. No more than a
-                few times a year, and you can stop any time.
+                Send me occasional news, updates and events. A few times a year at most, and you
+                can stop any time.
               </span>
             </label>
           </div>
@@ -172,7 +172,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
           {IS_STAGING ? (
             <div class="mt-8 border border-gold/30 bg-gold/5 px-5 py-5">
               <p class="text-sm text-paper">
-                This is a design preview — the form is not connected yet.
+                This is a design preview. The form is not connected yet.
               </p>
               <p class="dim mt-2 text-sm">
                 On the live site this sends straight to Jefferson. To reach him now:
@@ -195,10 +195,16 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
 
       <!-- Details -->
       <aside class="reveal lg:col-span-5">
-        <div class="plate-deep relative isolate overflow-hidden p-7 md:p-9 lg:sticky lg:top-24">
+        <div class="plate-deep relative isolate overflow-hidden p-7 md:p-9">
           <div class="pointer-events-none absolute -right-20 -top-20 w-64 opacity-50" aria-hidden="true">
             <Guilloche rings={3} opacity={0.3} />
           </div>
+
+          <PhotoSlot
+            class="relative mb-7"
+            ratio="3 / 2"
+            label="Jefferson at his desk or with a client, so the page has a face on it."
+          />
 
           <h2 class="relative text-[1.75rem]">{CONTACT.name}</h2>
           <p class="relative mt-1 font-display text-lg italic text-paper">{CONTACT.role}</p>
@@ -242,7 +248,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
             <div>
               <p class="text-sm text-paper">Save my details to your phone</p>
               <p class="mut mt-1.5 text-xs">
-                Scan for my digital name card, or download the contact file straight to your phone.
+                Scan for my digital name card, or download it straight to your phone.
               </p>
               <a href={u("/jefferson-lim.vcf")} download class="link-underline mt-3 text-sm">
                 Download my contact card
@@ -262,7 +268,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
                     target="_blank"
                     rel="noopener noreferrer"
                     class="flex h-11 w-11 items-center justify-center rounded-full border border-gold/35 text-gold transition-colors hover:border-gold hover:bg-gold hover:text-ink-950"
-                    aria-label={`${s.label} — ${s.handle}`}
+                    aria-label={`${s.label}: ${s.handle}`}
                   >
                     <Icon name={iconFor[s.label as keyof typeof iconFor]} size={18} />
                   </a>

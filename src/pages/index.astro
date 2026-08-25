@@ -4,76 +4,62 @@ import Base from "../layouts/Base.astro";
 import Guilloche from "../components/Guilloche.astro";
 import Icon from "../components/Icon.astro";
 import Pending from "../components/Pending.astro";
+import PhotoSlot from "../components/PhotoSlot.astro";
 import { CONTACT, PENDING } from "../consts";
 
 const career = [
   {
     place: "Singapore",
     role: "Business Development, then Audit",
-    body: "Started in business development at a construction firm, then spent four years as an auditor — where the habit of tracing every number back to its source became second nature.",
+    body: "Four years as an auditor taught me to trace every number back to where it came from. I never stopped.",
   },
   {
     place: "Seoul",
     role: "Financial Controller",
-    body: "Appointed Financial Controller for a Korean company developing an ocean park resort outside Seoul, and helped raise roughly USD 500 million in bonds through the Singapore market to fund it.",
+    body: "Financial Controller for a Korean ocean park resort. I raised around USD 500 million in bonds through the Singapore market to fund it.",
   },
   {
     place: "Ho Chi Minh City",
     role: "Capital Raising",
-    body: "Moved to Vietnam and supported a local company raising capital for an industrial and residential park development.",
+    body: "Helped a Vietnamese company raise capital for an industrial and residential park.",
   },
   {
     place: "Singapore",
     role: "Telecoms, then Public Healthcare",
-    body: "Returned home to the telecommunications sector, then moved into public healthcare."
+    body: "Came home to the telecoms sector, then moved into public healthcare.",
   },
   {
     place: "Singapore",
     role: "Building a Hospital's Finance Function",
-    body: "Built the finance department of a new public hospital from the ground up. I retired from corporate life after the hospital officially opened.",
+    body: "Built the finance department of a new public hospital from nothing. I retired the year it opened.",
   },
 ];
 
 const principles = [
-  {
-    t: "Meticulous, by training",
-    d: "Years in audit and corporate finance leave a mark. If a number cannot be traced, it does not go into your plan.",
-  },
-  {
-    t: "Plain language, always",
-    d: "If a recommendation cannot be explained simply, it is not ready to be acted on. You should know what you are signing, and why.",
-  },
-  {
-    t: "Your life first, products second",
-    d: "We start with your family, your career stage and the legacy you actually want — then look at what could support it.",
-  },
-  {
-    t: "Pace, not pressure",
-    d: "You decide when, and whether, to act. I would rather you take your time than take a wrong step.",
-  },
+  { t: "Meticulous, by training", d: "If a number cannot be traced, it does not go into your plan." },
+  { t: "Plain language, always", d: "If I cannot explain it simply, it is not ready. You should know what you are signing." },
+  { t: "Your life first", d: "We start with your family and what you actually want. Products come after that." },
+  { t: "Pace, not pressure", d: "You decide when, and whether. I would rather you took your time." },
 ];
 
-// Photographs from Jefferson's own BNI deck. Captions state what the picture
-// actually shows — the awards night is an event he attended, not an award won.
-const gallery = [
-  {
-    src: u("/jl-volunteer.webp"), w: 1200, h: 900,
-    cap: "Volunteering with RSVP Singapore at Qihua Primary School",
-  },
-  {
-    src: u("/jl-bhutan.webp"), w: 1200, h: 900,
-    cap: "Travelling in Bhutan",
-  },
-  {
-    src: u("/jl-awards.webp"), w: 1200, h: 900,
-    cap: "Prudential Agency Awards Night, 2025",
-  },
+// Real photographs from Jefferson's own files.
+const photos = [
+  { src: u("/jl-volunteer.webp"), w: 1200, h: 900, cap: "Volunteering with RSVP Singapore at Qihua Primary School" },
+  { src: u("/jl-bhutan.webp"), w: 1200, h: 900, cap: "Travelling in Bhutan" },
+  { src: u("/jl-awards.webp"), w: 1200, h: 900, cap: "Prudential Agency Awards Night, 2025" },
+];
+
+// Space held open for pictures Jefferson still needs to choose.
+const photoSlots = [
+  "Muay Thai, cycling or trekking",
+  "Leather crafting at his bench",
+  "With friends or family, off duty",
 ];
 ---
 
 <Base
   title="Jefferson Lim | Financial Consultant, Singapore"
-  description="Jefferson Lim is a Singapore financial consultant with Lee Jue Rong & Associates. Decades in audit, capital markets and hospital finance, now spent planning for families."
+  description="Jefferson Lim is a financial consultant in Singapore with Lee Jue Rong & Associates. Decades in audit, capital markets and hospital finance, now spent planning for families."
 >
   <!-- ===================== HERO ===================== -->
   <section class="relative isolate overflow-hidden border-b border-gold/15">
@@ -90,7 +76,7 @@ const gallery = [
       <Guilloche rings={4} opacity={0.2} />
     </div>
 
-    <div class="shell relative flex min-h-[86svh] flex-col justify-center py-24 md:py-32">
+    <div class="shell relative flex min-h-[80svh] flex-col justify-center py-24">
       <h1 class="enter max-w-4xl">
         Financial planning<br class="hidden md:block" />
         is for <span class="flourish">everyone</span>,<br class="hidden md:block" />
@@ -102,13 +88,11 @@ const gallery = [
       </div>
 
       <p class="lede enter prose-measure mt-8" style="animation-delay:.2s">
-        I'm Jefferson Lim. I spent decades in audit, capital markets and hospital finance before
-        becoming a consultant — including building the finance department of a new Singapore public
-        hospital. I plan the financial, legal and healthcare pieces together, so the people you
-        love are provided for.
+        I'm Jefferson Lim. I spent my career inside finance before becoming a consultant. Now I help
+        Singapore families get their plans in place, so the people they love are provided for.
       </p>
 
-      <div class="enter mt-11 flex flex-wrap items-center gap-4" style="animation-delay:.3s">
+      <div class="enter mt-10 flex flex-wrap items-center gap-4" style="animation-delay:.3s">
         <a href={u("/contact")} class="btn btn-gold">
           Start a conversation
           <Icon name="arrow" size={16} stroke={1.7} />
@@ -116,10 +100,8 @@ const gallery = [
         <a href={u("/services")} class="btn btn-outline">See how I help</a>
       </div>
 
-      <!-- Separators ride on the item as a right border, so a wrap can never
-           strand a divider at the end of a line. -->
       <ul
-        class="mut enter mt-16 flex flex-wrap items-center gap-y-2 text-xs uppercase tracking-[0.14em] [&>li:not(:last-child)]:mr-6 [&>li:not(:last-child)]:border-r [&>li:not(:last-child)]:border-gold/25 [&>li:not(:last-child)]:pr-6"
+        class="mut enter mt-14 flex flex-wrap items-center gap-y-2 text-xs uppercase tracking-[0.14em] [&>li:not(:last-child)]:mr-6 [&>li:not(:last-child)]:border-r [&>li:not(:last-child)]:border-gold/25 [&>li:not(:last-child)]:pr-6"
         style="animation-delay:.4s"
       >
         <li>Built a public hospital's finance function</li>
@@ -129,15 +111,15 @@ const gallery = [
     </div>
   </section>
 
-  <!-- ===================== WHY I DO THIS ===================== -->
-  <section class="shell py-20 md:py-28">
+  <!-- ===================== WHY ===================== -->
+  <section class="shell py-20 md:py-24">
     <div class="grid items-center gap-12 md:grid-cols-12 lg:gap-16">
       <div class="reveal md:col-span-5">
         <div class="relative">
           <div class="absolute -inset-3 border border-gold/25" aria-hidden="true"></div>
           <img
             src={u("/jefferson-portrait.webp")}
-            alt="Jefferson Lim, financial consultant"
+            alt="Jefferson Lim"
             width="1000"
             height="1484"
             class="relative aspect-[2/3] w-full object-cover"
@@ -151,13 +133,13 @@ const gallery = [
         <h2>Why I do this.</h2>
         <div class="prose-measure dim mt-7 space-y-5">
           <p>
-            With my background in hospital finance, I understand the emotional and financial
-            challenges families face during a medical crisis. I have watched, at close range, what
-            an unexpected diagnosis does to a household that has nothing in place.
+            I spent years in hospital finance. I saw what a serious illness does to a family with
+            nothing in place. Bills arrive, decisions get made in a hurry, and nobody is quite sure
+            what the person would have wanted.
           </p>
-          <p>
-            So I integrate financial, legal and healthcare planning to help clients protect their
-            loved ones, prepare for uncertainty, and build a legacy that means something.
+          <p class="text-paper">
+            So I plan the financial, legal and healthcare pieces together. One conversation, not
+            three.
           </p>
         </div>
 
@@ -171,93 +153,121 @@ const gallery = [
     </div>
   </section>
 
-  <!-- ===================== CAREER LEDGER ===================== -->
+  <!-- ===================== AT WORK ===================== -->
   <section class="border-y border-gold/15 bg-ink-850">
-    <div class="shell py-20 md:py-28">
-      <div class="max-w-2xl">
-        <h2 class="reveal">The career before this one.</h2>
-        <p class="reveal dim mt-6">
-          I became a consultant after retiring from corporate life, because the same gap kept
-          appearing: capable, intelligent people — many of them the healthcare professionals I had
-          worked alongside — had never been shown how to plan their own affairs.
-        </p>
-      </div>
-
-      <ol class="mt-14">
-        {career.map((c, i) => (
-          <li
-            class="reveal grid gap-x-10 gap-y-3 border-t border-gold/20 py-8 md:grid-cols-12 md:py-9"
-            style={`transition-delay:${i * 70}ms`}
-          >
-            <div class="order-2 mt-1 md:order-1 md:col-span-3 md:mt-0">
-              <span class="meta">{c.place}</span>
-            </div>
-            <div class="order-1 md:order-2 md:col-span-9">
-              <h3>{c.role}</h3>
-              <p class="dim prose-measure mt-3">{c.body}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- ===================== PRINCIPLES ===================== -->
-  <section class="shell py-20 md:py-28">
-    <h2 class="reveal max-w-xl">How I work.</h2>
-    <div class="mt-12 grid gap-x-14 gap-y-10 md:grid-cols-2">
-      {principles.map((p, i) => (
-        <div class="reveal" style={`transition-delay:${i * 80}ms`}>
-          <div class="rule-orn max-w-[4.5rem]"><span class="rule-orn__mark"></span></div>
-          <h3 class="mt-5">{p.t}</h3>
-          <p class="dim mt-3">{p.d}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- ===================== BEYOND THE DESK ===================== -->
-  <section class="border-t border-gold/15 bg-ink-850">
-    <div class="shell py-20 md:py-28">
-      <div class="grid gap-10 md:grid-cols-12">
+    <div class="shell py-16 md:py-20">
+      <div class="grid items-center gap-10 md:grid-cols-12 md:gap-14">
+        <PhotoSlot
+          class="reveal md:col-span-7"
+          ratio="16 / 9"
+          label="Jefferson with a client, or presenting. Something that shows him at work."
+        />
         <div class="reveal md:col-span-5">
-          <h2>A life, not just a practice.</h2>
+          <h2 class="text-[1.7rem] md:text-[2.1rem]">What a first meeting is like.</h2>
+          <p class="dim mt-5">
+            Unhurried, and free of jargon. You talk, I listen, and we work out what is missing.
+            Nothing gets decided that day.
+          </p>
+          <div class="mt-7">
+            <a href={u("/contact")} class="link-underline">
+              Book one
+              <Icon name="arrow" size={15} stroke={1.7} />
+            </a>
+          </div>
         </div>
-        <p class="reveal dim md:col-span-7 md:pt-3">
-          I am passionate about giving back through volunteering, particularly supporting numeracy
-          and mentoring students in schools. Outside of that I travel as often as I can, across Asia
-          and Europe. At home: leather crafting, Muay Thai, cycling, trekking.
-        </p>
       </div>
-
-      <ul class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {gallery.map((g, i) => (
-          <li class="reveal" style={`transition-delay:${i * 80}ms`}>
-            <div class="border border-gold/20 p-2">
-              <img
-                src={g.src}
-                alt={g.cap}
-                width={g.w}
-                height={g.h}
-                loading="lazy"
-                decoding="async"
-                class="aspect-[4/3] w-full object-cover"
-              />
-            </div>
-            <p class="meta mt-3">{g.cap}</p>
-          </li>
-        ))}
-      </ul>
     </div>
+  </section>
+
+  <!-- ===================== CAREER ===================== -->
+  <section class="shell py-20 md:py-24">
+    <div class="max-w-2xl">
+      <h2 class="reveal">The career before this one.</h2>
+      <p class="reveal dim mt-5">
+        I became a consultant after I retired, because the same gap kept showing up. Capable people,
+        many of them the healthcare staff I had worked beside, had never been shown how to plan
+        their own affairs.
+      </p>
+    </div>
+
+    <ol class="mt-12">
+      {career.map((c, i) => (
+        <li
+          class="reveal grid gap-x-10 gap-y-2 border-t border-gold/20 py-7 md:grid-cols-12 md:py-8"
+          style={`transition-delay:${i * 60}ms`}
+        >
+          <div class="order-2 mt-1 md:order-1 md:col-span-3 md:mt-0">
+            <span class="meta">{c.place}</span>
+          </div>
+          <div class="order-1 md:order-2 md:col-span-9">
+            <h3>{c.role}</h3>
+            <p class="dim prose-measure mt-2">{c.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- ===================== HOW I WORK ===================== -->
+  <section class="border-y border-gold/15 bg-ink-850">
+    <div class="shell py-20 md:py-24">
+      <h2 class="reveal max-w-xl">How I work.</h2>
+      <div class="mt-11 grid gap-x-14 gap-y-9 md:grid-cols-2">
+        {principles.map((p, i) => (
+          <div class="reveal" style={`transition-delay:${i * 70}ms`}>
+            <div class="rule-orn max-w-[4.5rem]"><span class="rule-orn__mark"></span></div>
+            <h3 class="mt-4">{p.t}</h3>
+            <p class="dim mt-2">{p.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== A LIFE ===================== -->
+  <section class="shell py-20 md:py-24">
+    <div class="grid gap-8 md:grid-cols-12">
+      <div class="reveal md:col-span-5">
+        <h2>A life, not just a practice.</h2>
+      </div>
+      <p class="reveal dim md:col-span-7 md:pt-3">
+        I volunteer in schools, supporting numeracy and mentoring students. I travel when I can,
+        across Asia and Europe. At home it is leather crafting, Muay Thai, cycling and trekking.
+      </p>
+    </div>
+
+    <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {photos.map((g, i) => (
+        <li class="reveal" style={`transition-delay:${i * 70}ms`}>
+          <div class="border border-gold/20 p-2">
+            <img
+              src={g.src}
+              alt={g.cap}
+              width={g.w}
+              height={g.h}
+              loading="lazy"
+              decoding="async"
+              class="aspect-[4/3] w-full object-cover"
+            />
+          </div>
+          <p class="meta mt-3">{g.cap}</p>
+        </li>
+      ))}
+      {photoSlots.map((label, i) => (
+        <li class="reveal" style={`transition-delay:${(i + 3) * 70}ms`}>
+          <div class="p-2"><PhotoSlot label={label} /></div>
+        </li>
+      ))}
+    </ul>
   </section>
 
   <!-- ===================== TESTIMONIAL ===================== -->
   {PENDING.testimonial && (
-    <section class="shell py-16 md:py-20">
+    <section class="shell pb-20 md:pb-24">
       <div class="reveal mx-auto max-w-3xl">
         <h2 class="text-center text-[1.6rem] md:text-[2rem]">In a client's own words</h2>
         <div class="rule-orn mx-auto mt-5 max-w-[10rem]"><span class="rule-orn__mark"></span></div>
-        <div class="mt-8">
+        <div class="mt-7">
           <Pending>
             Jefferson needs to supply the quote and the attribution (name and role), and both must
             clear Prudential's compliance review before this section can go live.
@@ -275,11 +285,11 @@ const gallery = [
     >
       <Guilloche rings={4} opacity={0.22} />
     </div>
-    <div class="shell relative py-24 text-center md:py-32">
+    <div class="shell relative py-24 text-center md:py-28">
       <h2 class="mx-auto max-w-2xl">Curious whether we would work well together?</h2>
       <p class="dim mx-auto mt-6 max-w-xl">
-        A short conversation is the easiest way to find out. Nothing to prepare, and nothing owed
-        at the end of it.
+        A short conversation is the easiest way to find out. Nothing to prepare, and nothing owed at
+        the end of it.
       </p>
       <div class="mt-10 flex flex-wrap justify-center gap-4">
         <a href={u("/contact")} class="btn btn-gold">

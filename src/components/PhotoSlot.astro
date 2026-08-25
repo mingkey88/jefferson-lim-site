@@ -1,0 +1,34 @@
+---
+import Icon from "./Icon.astro";
+
+/**
+ * A reserved space for a photograph Jefferson has not supplied yet.
+ *
+ * Drawn as a finished element rather than a broken image, so the layout can be
+ * reviewed with him and the slot swapped for a real picture later. Swap the
+ * whole component for a real image tag once a photo arrives.
+ */
+interface Props {
+  /** What picture belongs here. Shown to whoever is reviewing the page. */
+  label: string;
+  /** CSS aspect-ratio, e.g. "4 / 3". */
+  ratio?: string;
+  class?: string;
+}
+
+const { label, ratio = "4 / 3", class: className = "" } = Astro.props;
+---
+
+<figure class={className}>
+  <div
+    class="relative flex items-center justify-center overflow-hidden border border-gold/25 bg-ink-850"
+    style={`aspect-ratio:${ratio}`}
+  >
+    <span class="absolute inset-2.5 border border-dashed border-gold/20" aria-hidden="true"></span>
+    <div class="relative flex flex-col items-center gap-3 px-6 text-center">
+      <Icon name="camera" size={26} class="text-gold/60" stroke={1.1} />
+      <span class="meta text-gold/70">Photo to come</span>
+      <span class="dim max-w-[22ch] text-sm leading-snug">{label}</span>
+    </div>
+  </div>
+</figure>
