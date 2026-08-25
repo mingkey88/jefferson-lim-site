@@ -3,6 +3,7 @@ import { u } from "../lib/url";
 import Base from "../layouts/Base.astro";
 import Guilloche from "../components/Guilloche.astro";
 import Icon from "../components/Icon.astro";
+import Monogram from "../components/Monogram.astro";
 import Pending from "../components/Pending.astro";
 import { CONTACT } from "../consts";
 
@@ -197,6 +198,7 @@ const pyramid = [
       <Guilloche rings={4} opacity={0.2} />
     </div>
     <div class="shell relative py-24 text-center md:py-28">
+            <Monogram size={52} class="mx-auto mb-8 opacity-90" />
       <h2 class="mx-auto max-w-2xl">Want to know which parts you already have?</h2>
       <p class="dim mx-auto mt-6 max-w-xl">
         Bring what you have. We will mark up both maps together, and you will leave knowing where

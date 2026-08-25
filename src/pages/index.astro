@@ -3,6 +3,7 @@ import { u } from "../lib/url";
 import Base from "../layouts/Base.astro";
 import Guilloche from "../components/Guilloche.astro";
 import Icon from "../components/Icon.astro";
+import Monogram from "../components/Monogram.astro";
 import Pending from "../components/Pending.astro";
 import PhotoSlot from "../components/PhotoSlot.astro";
 import { CONTACT, PENDING } from "../consts";
@@ -286,6 +287,7 @@ const photoSlots = [
       <Guilloche rings={4} opacity={0.22} />
     </div>
     <div class="shell relative py-24 text-center md:py-28">
+            <Monogram size={52} class="mx-auto mb-8 opacity-90" />
       <h2 class="mx-auto max-w-2xl">Curious whether we would work well together?</h2>
       <p class="dim mx-auto mt-6 max-w-xl">
         A short conversation is the easiest way to find out. Nothing to prepare, and nothing owed at

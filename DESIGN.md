@@ -56,6 +56,14 @@ Carried by **gold hairlines, not boxes**.
 
 Same-size icon-heading-text cards are not the page structure anywhere. The Six Areas grid is a ruled table (`gap-px` over a gold ground); the Wealth Pyramid and the five pillars are hairline-separated schedules.
 
+## The monogram
+
+Jefferson's own JL mark, supplied as artwork. It carries a gold gradient, so it ships as a transparent raster (`public/jl-monogram.webp`, 384px) rather than being redrawn as flat SVG, which would lose the gradient.
+
+It appears in the navigation, the footer, the closing seal on each page, the ad landing page, the share card, and as the favicon. `src/components/Monogram.astro` wraps it; give the `title` prop only when the mark is the sole content of a link.
+
+Favicons are generated from the same artwork: `favicon.ico` (16/32/48) and `apple-touch-icon.png` (180). The gold reads on both light and dark browser chrome.
+
 ## Guilloché
 
 `src/components/Guilloche.astro` computes real hypotrochoid geometry at build time — a rolling circle of 7 against fixed radii coprime to it, giving each ring a different petal count and the moiré depth real engine-turning has. No runtime JS, crisp at any size.

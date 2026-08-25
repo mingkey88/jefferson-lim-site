@@ -3,6 +3,7 @@ import { u } from "../lib/url";
 import Base from "../layouts/Base.astro";
 import Guilloche from "../components/Guilloche.astro";
 import Icon from "../components/Icon.astro";
+import Monogram from "../components/Monogram.astro";
 import PhotoSlot from "../components/PhotoSlot.astro";
 import { CONTACT } from "../consts";
 
@@ -183,6 +184,7 @@ const steps = [
       <Guilloche rings={4} opacity={0.2} />
     </div>
     <div class="shell relative py-24 text-center md:py-28">
+            <Monogram size={52} class="mx-auto mb-8 opacity-90" />
       <h2 class="mx-auto max-w-2xl">Not sure which of the five you are missing?</h2>
       <p class="dim mx-auto mt-6 max-w-xl">
         That is normal, and it is exactly what a first conversation is for.
