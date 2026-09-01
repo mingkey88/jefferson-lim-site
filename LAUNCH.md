@@ -15,11 +15,13 @@ Nothing below can be written by anyone else. On a Prudential-regulated site, inv
 | 3 | **PDPA consent wording** — Prudential's approved template | `src/pages/contact.astro`, replacing the current placeholder |
 | 4 | **Approval code for `/ad-personal`** — this is a new creative, so the old funnel's `AT27Sep24FF27` does not cover it | `src/pages/ad-personal.astro` |
 | 5 | **Line-by-line check of the two Resources frameworks** against the approved chart artwork | `src/pages/resources.astro` |
-| 6 | **Photographs for the 10 reserved slots**, or a decision to drop some | `<PhotoSlot>` in index / services / contact |
+| 6 | **Photographs for the 7 reserved slots**, or a decision to drop some | `<PhotoSlot>` in index / services / contact |
 
 ### Two specific things to ask him about
 
 **The office address conflicts.** The live ad funnel says *51 Scotts Road #02-09, Singapore 228241, DID (65) 9383 0563*. The design brief says *1 Pasir Panjang Road #05-01V Labrador Tower, Singapore 118497, Mobile 9298 8326*. The brief's details are used throughout. Confirm which is current — a wrong address on a regulated site is a real problem.
+
+**"Star Club Elite, first year" has been removed from the home page.** It sat in the hero as an unexplained piece of internal jargon, and as a production award it reads as a performance claim, which on a regulated site is not ours to publish without clearance. If Jefferson wants it back, he needs to say what it means in plain words and confirm it is approved for advertising use. Restoring it is a one-line change to the hero in `src/pages/index.astro`.
 
 **Two Resources entries look wrong.** The "Wealth Creation" tier lists Lasting Power of Attorney, Trust and Advance Medical Directive — those are succession and incapacity instruments, not wealth creation. And several Six Areas entries read as US tax concepts that don't apply in Singapore: *filing status*, *cost basis analysis*, *effects of liquidations*. Both may be transcription errors in the source chart.
 
@@ -32,7 +34,7 @@ Nothing below can be written by anyone else. On a Prudential-regulated site, inv
 | **Contact form handler** | The form posts via Netlify Forms (`data-netlify`). On any other host, submissions are **silently lost**. Replace the action if not deploying to Netlify. |
 | **Old funnel URLs** | The domain currently serves a GoHighLevel funnel with indexed URLs. Export them and map each to its nearest new page in `public/_redirects`. Without this, existing search traffic 404s on launch day. |
 | **Facebook URL** | Named in the brief but no URL supplied, so the link is held out of the footer and out of the schema `sameAs`. Add it to `SOCIAL` in `src/consts.ts` once known. |
-| **Success page** | Netlify's default confirmation would greet someone who has just written about a diagnosis. Worth a `/thank-you` page. |
+| **Success page** | Built: `/thank-you`, noindexed. Netlify's default confirmation would have greeted someone who had just written about a diagnosis. |
 | **Apex/www redirect** | Configure one-way to `https://jefferson-lim.com` before DNS cutover. |
 | **Favicon fallbacks** | Only `favicon.svg` exists. Add `favicon.ico` (32×32) and `apple-touch-icon.png` (180×180). |
 | **Schema `geo`** | Deliberately omitted — verify Labrador Tower coordinates before adding, or leave out. |
@@ -51,3 +53,5 @@ Nothing below can be written by anyone else. On a Prudential-regulated site, inv
 - Accessibility: skip link now moves focus, mobile menu closes on Escape and outside click, tap targets at 44px, the privacy-notice link moved out of the required-consent label, focus rings consistent.
 - Contrast verified in-browser: 0 failures across 445 text elements.
 - Internal build rationale and developer TODOs stripped from production HTML.
+- Enquiry form validates in Jefferson's own words: inline messages per field, a live region announcing how much is left, focus moved to the first problem, and a sending state on the button. `novalidate` is set from script, so the native validation still guards the form if the script never runs.
+- Home page hero now states the hospital credential as real type rather than 12px grey fine print.

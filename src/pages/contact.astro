@@ -117,14 +117,17 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
             <div>
               <label class="field-label" for="first-name">First name <abbr title="required" class="text-gold no-underline">*</abbr></label>
               <input class="field" id="first-name" name="first-name" type="text" autocomplete="given-name" required />
+              <p class="field-error" id="first-name-error" hidden></p>
             </div>
             <div>
               <label class="field-label" for="last-name">Last name <abbr title="required" class="text-gold no-underline">*</abbr></label>
               <input class="field" id="last-name" name="last-name" type="text" autocomplete="family-name" required />
+              <p class="field-error" id="last-name-error" hidden></p>
             </div>
             <div>
               <label class="field-label" for="email">Email <abbr title="required" class="text-gold no-underline">*</abbr></label>
               <input class="field" id="email" name="email" type="email" inputmode="email" autocomplete="email" required />
+              <p class="field-error" id="email-error" hidden></p>
             </div>
             <div>
               <label class="field-label" for="phone">Mobile number</label>
@@ -136,6 +139,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
             <label class="field-label" for="message">Message <abbr title="required" class="text-gold no-underline">*</abbr></label>
             <p class="mut mb-2 text-xs">Even a rough sense of it is enough to start.</p>
             <textarea class="field" id="message" name="message" rows="5" required></textarea>
+            <p class="field-error" id="message-error" hidden></p>
           </div>
 
           <hr class="hairline my-8" />
@@ -166,6 +170,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
                 >Prudential Data Privacy Notice</a><abbr title="required" class="text-gold no-underline">*</abbr>
               </p>
             </div>
+            <p class="field-error" id="consent-error" hidden></p>
 
             <label class="choice items-start" for="subscribe">
               <input type="checkbox" id="subscribe" name="subscribe" class="mt-1" />
@@ -199,10 +204,13 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
               </div>
             </div>
           ) : (
-            <button type="submit" class="btn btn-gold mt-8 w-full sm:w-auto">
-              Send my enquiry
-              <Icon name="arrow" size={16} stroke={1.7} />
-            </button>
+            <>
+              <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+              <button type="submit" class="btn btn-gold mt-6 w-full sm:w-auto">
+                <span data-label>Send my enquiry</span>
+                <Icon name="arrow" size={16} stroke={1.7} />
+              </button>
+            </>
           )}
         </form>
       </div>
@@ -295,3 +303,111 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
     </div>
   </section>
 </Base>
+
+<script>
+  /**
+   * Form validation in Jefferson's voice.
+   *
+   * The browser's native bubbles are technically fine, but they speak in
+   * Chrome's words, they point at one field at a time, they disappear the
+   * moment you scroll, and a screen reader gets them once and never again.
+   * On a page where someone may be typing about a diagnosis, that is the
+   * wrong moment to hand them over to the browser.
+   *
+   * Progressive enhancement: `novalidate` is set from here, not in the markup,
+   * so if this file never runs the native validation still guards the form.
+   */
+  const form = document.querySelector<HTMLFormElement>('form[name="enquiry"]');
+  const submit = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+  // No submit button means the staging preview, where the form is inert.
+  if (form && submit) {
+    form.noValidate = true;
+
+    const status = document.getElementById("form-status");
+
+    /** What each field says when it is wrong. Keys are ValidityState flags. */
+    const messages: Record<string, Record<string, string>> = {
+      "first-name": { valueMissing: "Please add your first name." },
+      "last-name": { valueMissing: "Please add your last name." },
+      email: {
+        valueMissing: "I need an email address to reply to.",
+        typeMismatch: "That address looks incomplete. Check it for a typo.",
+      },
+      message: { valueMissing: "A rough sense of what you need is enough." },
+      consent: { valueMissing: "I need your consent before I can contact you." },
+    };
+
+    const controls = Object.keys(messages)
+      .map((name) => form.elements.namedItem(name))
+      .filter((el): el is HTMLInputElement | HTMLTextAreaElement =>
+        el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement
+      );
+
+    // The consent box already describes itself with the legal paragraph, so
+    // remember what was there before we start appending error ids to it.
+    const described = new WeakMap<Element, string>();
+    controls.forEach((el) => described.set(el, el.getAttribute("aria-describedby") ?? ""));
+
+    const reason = (el: HTMLInputElement | HTMLTextAreaElement) => {
+      const rules = messages[el.name] ?? {};
+      for (const flag of Object.keys(rules)) {
+        if (el.validity[flag as keyof ValidityState]) return rules[flag];
+      }
+      return el.validationMessage;
+    };
+
+    /** Paints one field's state. Returns whether it is valid. */
+    function mark(el: HTMLInputElement | HTMLTextAreaElement) {
+      const box = document.getElementById(`${el.name}-error`);
+      const ok = el.checkValidity();
+      if (box) {
+        box.textContent = ok ? "" : reason(el);
+        box.hidden = ok;
+      }
+      el.setAttribute("aria-invalid", String(!ok));
+      const ids = [described.get(el) ?? "", ok || !box ? "" : box.id].filter(Boolean).join(" ");
+      if (ids) el.setAttribute("aria-describedby", ids);
+      else el.removeAttribute("aria-describedby");
+      return ok;
+    }
+
+    let attempted = false;
+
+    controls.forEach((el) => {
+      // Nothing turns red while you are still typing it for the first time.
+      // After a failed send, corrections are acknowledged as you make them.
+      const recheck = () => attempted && mark(el);
+      el.addEventListener("blur", recheck);
+      el.addEventListener("input", recheck);
+      el.addEventListener("change", recheck);
+    });
+
+    form.addEventListener("submit", (event) => {
+      attempted = true;
+      const bad = controls.filter((el) => !mark(el));
+
+      if (bad.length) {
+        event.preventDefault();
+        if (status) {
+          status.textContent =
+            bad.length === 1
+              ? "One thing to fix before this can send."
+              : `${bad.length} things to fix before this can send.`;
+        }
+        bad[0].focus();
+        return;
+      }
+
+      if (status) status.textContent = "";
+      form.setAttribute("aria-busy", "true");
+      const label = submit.querySelector("[data-label]");
+      if (label) label.textContent = "Sending";
+      // Deferred: disabling a submit button inside its own handler can cancel
+      // the submission it is meant to be confirming.
+      setTimeout(() => {
+        submit.disabled = true;
+      }, 0);
+    });
+  }
+</script>

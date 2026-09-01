@@ -57,13 +57,6 @@ const photos = [
   w: 1200,
   h: 900,
 }));
-
-// Space held open for pictures Jefferson still needs to choose.
-const photoSlots = [
-  "Muay Thai, cycling or trekking",
-  "Leather crafting at his bench",
-  "With friends or family, off duty",
-];
 ---
 
 <Base
@@ -109,14 +102,14 @@ const photoSlots = [
         <a href={u("/services")} class="btn btn-outline">See how I help</a>
       </div>
 
-      <ul
-        class="mut enter mt-14 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs uppercase tracking-[0.14em] xl:gap-x-0 xl:[&>li:not(:last-child)]:mr-6 xl:[&>li:not(:last-child)]:border-r xl:[&>li:not(:last-child)]:border-gold/25 xl:[&>li:not(:last-child)]:pr-6"
-        style="animation-delay:.4s"
-      >
-        <li>Built a public hospital's finance function</li>
-        <li>Star Club Elite, first year</li>
-        <li>Prudential Assurance Company Singapore</li>
-      </ul>
+      <div class="enter mt-14 max-w-xl border-t border-gold/20 pt-7" style="animation-delay:.4s">
+        <p class="text-paper">
+          I built the finance department of a new Singapore public hospital.
+        </p>
+        <p class="mut mt-3 text-sm">
+          {CONTACT.agency}, an agency unit of Prudential Assurance Company Singapore.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -178,7 +171,7 @@ const photoSlots = [
           </p>
           <div class="mt-7">
             <a href={u("/contact")} class="link-underline">
-              Book one
+              Arrange a first meeting
               <Icon name="arrow" size={15} stroke={1.7} />
             </a>
           </div>
@@ -261,11 +254,6 @@ const photoSlots = [
             />
             <figcaption class="meta mt-3 px-0.5">{g.cap}</figcaption>
           </figure>
-        </li>
-      ))}
-      {photoSlots.map((label, i) => (
-        <li class="reveal" style={`transition-delay:${(i + 3) * 70}ms`}>
-          <div class="p-2"><PhotoSlot label={label} /></div>
         </li>
       ))}
     </ul>

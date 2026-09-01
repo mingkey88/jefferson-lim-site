@@ -58,6 +58,12 @@ Same-size icon-heading-text cards are not the page structure anywhere. The Six A
 
 The five pillars on `/services` are the exception: at the client's request they are now alternating photograph-and-text rows, the layout his own brief drew. That is closer to the category default than the rest of the site, and it is a deliberate trade for the photographs he wanted. If the pictures never arrive, revert it to a hairline schedule rather than shipping the bands empty.
 
+## Errors
+
+The enquiry form takes over from the browser's own validation, because native bubbles speak in Chrome's words, point at one field at a time, and vanish on scroll. Messages are written in Jefferson's voice and set in `#f0a48f` — a salmon mixed toward the navy rather than a system red, at 7.5:1 on the plate. Each one carries the same rotated lozenge the rest of the site uses as a list mark, so an error reads as part of the engraving.
+
+Nothing turns red while someone is still typing. State appears only after a real send attempt, and clears again as it is corrected.
+
 ## The monogram
 
 Jefferson's own JL mark, supplied as artwork. It carries a gold gradient, so it ships as a transparent raster (`public/jl-monogram.webp`, 384px) rather than being redrawn as flat SVG, which would lose the gradient.
