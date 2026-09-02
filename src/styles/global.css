@@ -335,6 +335,8 @@
     color: #f0a48f;
   }
   .form-status:empty { display: none; }
+  /* Same region, opposite news. */
+  .form-status--ok { color: var(--color-gold-bright); }
 
   .field-label {
     display: block;

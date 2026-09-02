@@ -88,6 +88,7 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
           data-netlify={IS_STAGING ? undefined : "true"}
           netlify-honeypot={IS_STAGING ? undefined : "bot-field"}
           onsubmit={IS_STAGING ? "return false;" : undefined}
+          data-staging={IS_STAGING ? "true" : undefined}
           class="plate p-7 md:p-9"
         >
           <input type="hidden" name="form-name" value="enquiry" />
@@ -188,13 +189,13 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
             </Pending>
           </div>
 
-          {IS_STAGING ? (
+          {IS_STAGING && (
             <div class="mt-8 border border-gold/30 bg-gold/5 px-5 py-5">
               <p class="text-sm text-paper">
-                This is a design preview. The form is not connected yet.
+                This is a design preview. The button below checks the form but sends nothing.
               </p>
               <p class="dim mt-2 text-sm">
-                On the live site this sends straight to Jefferson. To reach him now:
+                On the live site it goes straight to Jefferson. To reach him now:
               </p>
               <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
                 <a href={CONTACT.phoneHref} class="link-underline">{CONTACT.phone}</a>
@@ -203,15 +204,13 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
                 </a>
               </div>
             </div>
-          ) : (
-            <>
-              <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-              <button type="submit" class="btn btn-gold mt-6 w-full sm:w-auto">
-                <span data-label>Send my enquiry</span>
-                <Icon name="arrow" size={16} stroke={1.7} />
-              </button>
-            </>
           )}
+
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          <button type="submit" class="btn btn-gold mt-6 w-full sm:w-auto">
+            <span data-label>Send my enquiry</span>
+            <Icon name="arrow" size={16} stroke={1.7} />
+          </button>
         </form>
       </div>
 
@@ -377,7 +376,13 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
     controls.forEach((el) => {
       // Nothing turns red while you are still typing it for the first time.
       // After a failed send, corrections are acknowledged as you make them.
-      const recheck = () => attempted && mark(el);
+      const recheck = () => {
+        if (status && status.classList.contains("form-status--ok")) {
+          status.classList.remove("form-status--ok");
+          status.textContent = "";
+        }
+        return attempted && mark(el);
+      };
       el.addEventListener("blur", recheck);
       el.addEventListener("input", recheck);
       el.addEventListener("change", recheck);
@@ -396,6 +401,20 @@ const iconFor = { Facebook: "facebook", Instagram: "instagram", LinkedIn: "linke
               : `${bad.length} things to fix before this can send.`;
         }
         bad[0].focus();
+        return;
+      }
+
+      if (status) status.classList.remove("form-status--ok");
+
+      // The staging preview has nowhere to post to. Rather than hide the
+      // button — which is what stopped anyone seeing this work at all — the
+      // form validates for real and then says plainly that it stopped there.
+      if (form.dataset.staging) {
+        event.preventDefault();
+        if (status) {
+          status.classList.add("form-status--ok");
+          status.textContent = "That all checks out. On the live site it would be with Jefferson now.";
+        }
         return;
       }
 
